@@ -1,0 +1,112 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          ${service.name}
+# Required-Start:    $local_fs $remote_fs $network
+# Required-Stop:     $local_fs $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Generic init script for Scorr backend services
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.
+### END INIT INFO
+
+#
+# Do NOT "set -e"
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script 
+# i.e. contains $remote_fs in Required-Start section
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="${service.desc}"
+NAME=${service.name}
+JAVA=`which java`
+JAVA_ARGS="${service.jvm_args}"
+DAEMON=${service.installdir}/${service.name}/${service.jar}
+DAEMON_ARGS="${service.args}"
+JMX_AGENT_JAR="${service.installdir}/shared/jolokia-jvm-agent.jar"
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+
+JAVA_ARGS_COMMON="-cp ${service.name}.jar:lib/*"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/inshop/${service.name}.hprof"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -XX:+DisableExplicitGC"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -Xloggc:/var/log/inshop/${service.name}-gc-$(date '+%m%d%Y-%H_%M_%S').log -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -javaagent:$JMX_AGENT_JAR=port=${service.jalokia_agent_port},host=localhost,agentContext=/jmx"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -Ddaemon.pidfile=$PIDFILE -Dspring.profiles.active=${service.profiles}"
+JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=${service.jmx_agent_port} -Dcom.sun.management.jmxremote.ssl=false"
+
+${service.remote_debug} && JAVA_ARGS_COMMON="$JAVA_ARGS_COMMON -Xdebug -Xrunjdwp:transport=dt_socket,address=${service.debug_port},server=y,suspend=n"
+
+JAVA_ARGS="$JAVA_ARGS_COMMON $JAVA_ARGS -Dservice.config_file=${service.installdir}/${service.name}/${service.name}.properties -Dlogs.dir=/var/log/inshop"
+
+# Exit if the java or service package is not installed
+[ -x "$JAVA" ] || exit 0
+[ -r "$DAEMON" ] || exit 0
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Load the VERBOSE setting and other rcS variables
+#. /lib/init/vars.sh
+
+# Define LSB log_* functions. Depend on lsb-base (>= 3.2-14) to ensure that this file is present and status_of_proc is working.
+if [ -e /etc/debian_version ]; then
+	. /lib/lsb/init-functions
+elif [-e /etc/init.d/functions ]; then
+	./etc/init.d/functions
+fi
+
+do_start()
+{
+    start-stop-daemon -d ${service.installdir}/${service.name} --start --quiet --background --make-pidfile --pidfile $PIDFILE --exec /bin/bash -- -c "exec $JAVA $JAVA_ARGS com.inshop.service.ServiceLauncher > /var/log/inshop/$NAME-jvm.log 2>&1"
+}
+
+do_stop()
+{
+    start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE
+}
+
+# Main case
+case "$1" in
+  start)
+    log_daemon_msg "Starting $DESC" "$NAME"
+    
+    if do_start; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+    
+  stop)
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    
+    if do_stop; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+    
+  restart)
+    log_daemon_msg "Restarting $DESC" "$NAME"
+    
+    # Stop
+    do_stop
+
+    # And start
+    if do_start; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+    
+  status)
+        status_of_proc -p $PIDFILE $JAVA $NAME && exit 0 || exit $?
+        ;;
+  *)
+        log_action_msg "Usage: $SCRIPTNAME {start|stop|restart|status}"
+        exit 1
+esac
+
+exit 0
