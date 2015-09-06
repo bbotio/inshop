@@ -24,9 +24,6 @@ public class User implements Serializable {
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
-    public User() {
-    }
-
     public int getId() {
         return id;
     }

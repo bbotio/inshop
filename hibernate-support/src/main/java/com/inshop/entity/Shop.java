@@ -32,9 +32,6 @@ public class Shop implements Serializable {
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private ShopDelivery shopDelivery;
 
-    public Shop() {
-    }
-
     public int getId() {
         return id;
     }

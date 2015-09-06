@@ -18,4 +18,28 @@ public class Cart implements Serializable {
 
     @Column(name = "date")
     private LocalDateTime date;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", date=" + date +
+                '}';
+    }
 }
