@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+BASEDIR=$(dirname $0)
+
+# Remove any previous installation of this service
+update-rc.d -f ${service.name} remove
+rm -rf ${service.installdir}/${service.name}
+
+# Ensure we have all needed directories
+[ -d "${service.installdir}/${service.name}" ] || mkdir -p ${service.installdir}/${service.name}
+
+if [ ! -d "${service.installdir}/shared" ]; then
+    echo "Installing Jolokia JXM agent jar..."
+    mkdir ${service.installdir}/shared
+    wget -O ${service.installdir}/shared/jolokia-jvm-agent.jar http://labs.consol.de/maven/repository/org/jolokia/jolokia-jvm/1.0.5/jolokia-jvm-1.0.5-agent.jar
+    chmod 444 ${service.installdir}/shared/jolokia-jvm-agent.jar
+fi
+
+[ -d "/var/log/inshop" ] || mkdir /var/log/inshop
+
+# Copy new service distribution and its wrapper script
+echo 'Copying service files from BASEDIR/* to ${service.installdir}/${service.name}/'
+cp -r $BASEDIR/* ${service.installdir}/${service.name}/
+chmod a-w,a+r ${service.installdir}/${service.name}/${service.jar}
+
+echo 'Cleaning installation directory'
+rm -f ${service.installdir}/${service.name}/${service.name}
+rm -f ${service.installdir}/${service.name}/${service.name}-install
+rm -f ${service.installdir}/${service.name}/${service.name}.zip
+
+cp $BASEDIR/${service.wrapper} /etc/init.d/${service.wrapper}
+chmod 755 /etc/init.d/${service.wrapper}
+
+# Add the script to the default runlevels
+update-rc.d ${service.wrapper} defaults

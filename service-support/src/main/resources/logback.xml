@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %X{deviceId}/%X{remoteIP} [%thread] %-5level %logger{50} - %msg%n"/>
+    <property name="logsDir" value="${logs.dir:-log/inshop}"/>
+    <property name="maxFileSize" value="500MB"/>
+    <property resource="config.properties"/>
+
+    <!-- Required for JUL to work without performance impact. 
+         http://logback.qos.ch/manual/configuration.html#LevelChangePropagator -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator" />
+
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logsDir}/${service_name}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logsDir}/${service_name}-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>28</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.inshop" level="INFO" />
+
+    <root level="INFO">
+        <appender-ref ref="ROLLING_FILE"/>
+    </root>
+
+ </configuration>
