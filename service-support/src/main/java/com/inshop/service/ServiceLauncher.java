@@ -22,8 +22,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
 /**
  * @author Aleksei Kornev
  */
-public class
-        ServiceLauncher {
+public class ServiceLauncher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceLauncher.class);
 
