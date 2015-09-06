@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Base class for customer.
+ * {@link Customer#name} - customer's name
+ * {@link Customer#email} - customer's email
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

@@ -4,6 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * This class store additional parameters from user-defined url in product description.
+ *
+ * Every product image in instagram must has url to user's shop, e.g:
+ * http://<domain>.inshop.com/index.html?category=<category>&size=<size>&param1=value1&...
+ * all parameters and values after mandatory parameters like category and size will be stored
+ * in {@link AdditionalField}.
+ *
+ * Also this class contains reference to product object.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

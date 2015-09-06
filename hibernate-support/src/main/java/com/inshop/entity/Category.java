@@ -4,6 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Base class for product category.
+ *
+ * Every category has a {@link Category#name} (shoes, t-shirts and etc.) and {@link Category#product}.
+ * Each category can has more than one product.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

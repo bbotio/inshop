@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Every product has count. After fetching all data we populate (product x count) to (product, product, ...)
+ * {@link ProductPackage} is used to store all products of the same type.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

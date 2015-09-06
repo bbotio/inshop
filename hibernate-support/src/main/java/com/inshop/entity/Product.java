@@ -5,6 +5,15 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Base class for product.
+ *
+ * Each product has a name & description, price (in RUB, USD, EUR), seller-defined tags (#t-shirt, #xxl and etc),
+ * url to product image in seller's instagram and product creation date.
+ *
+ * Pay attention, that our application will fetch only products with tag #instore.
+ *
+ * Also class has references to shop, in which product is sold, and product package. (@see {@link ProductPackage})
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

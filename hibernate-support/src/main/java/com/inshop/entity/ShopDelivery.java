@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * This class is something like {@link AdditionalField} for {@link Product}.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

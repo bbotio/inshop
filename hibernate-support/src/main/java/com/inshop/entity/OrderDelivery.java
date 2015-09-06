@@ -5,6 +5,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Base class for order delivery type.
+ *
+ * Contains departure date, {@link OrderDelivery#trackId} in some delivery service (or null, if user has selected
+ * self-service) and delivery address.
+ * Also this class contains reference to current shop's delivery types.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

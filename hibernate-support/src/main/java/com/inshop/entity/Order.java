@@ -5,6 +5,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Base class for order.
+ * Each order has creation {@link Order#date}, {@link Order#status} (e.g. IN_PROCESSING, PROCESSED and etc,
+ * for more info @see {@link Status}. Also order has a user selected product. Each order can has only product of
+ * one type. {@link Order#orderDelivery} shows user selected delivery type. {@link Order#cart} is a user's current cart.
+ * {@link Order#customer} - reference to the customer, whose order it is.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

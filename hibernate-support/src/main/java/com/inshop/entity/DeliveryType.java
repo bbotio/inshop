@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Base class for delivery type (e.g.: self-service, EMS, DHL and etc.)
+ * Every delivery type has the name and description, which includes delivery's conditions (cost,
+ * delivery area and etc.)
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity
@@ -20,7 +24,7 @@ public class DeliveryType implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private ShopDelivery shopDelivery;
 

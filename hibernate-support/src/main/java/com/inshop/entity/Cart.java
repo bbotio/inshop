@@ -5,9 +5,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * Base class for cart.
+ *
  * Created by savetisyan on 05/09/15.
  */
-
 @Entity
 @Table(name = "Cart")
 public class Cart implements Serializable {

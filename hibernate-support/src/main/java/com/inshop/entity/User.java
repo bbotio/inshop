@@ -3,7 +3,12 @@ package com.inshop.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
+/** Base user entity.
+ * Contains user's {@link User#email} and {@link User#instagramToken}.
+ * Instagram token is required for fetching {@link Product}'s from user's instagram account.
+ * Also user has direct reference to his {@link Shop}. Pay attention, that user can
+ * has only one shop.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

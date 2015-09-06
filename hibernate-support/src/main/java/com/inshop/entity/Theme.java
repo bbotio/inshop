@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Base entity for UI theme.
+ * Contains user's name and path to the UI theme of shop.
+ *
  * Created by savetisyan on 05/09/15.
  */
 @Entity

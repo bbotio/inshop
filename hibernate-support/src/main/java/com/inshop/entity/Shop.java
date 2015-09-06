@@ -4,6 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Base class for user's shop.
+ * User can choose subdomain in our domain (inshop.com), e.g.: http://sevakshop.inshop.com,
+ * or specify his own domain name, e.g.: myshop.com
+ *
+ * User can change {@link Shop#title} on main page. Also he can change shop's description.
+ * {@link Shop#theme} is UI theme of shop.
+ * {@link Shop#shopDelivery} is available delivery type (self-service, EMS and etc.).
+ * Every shop can has more than one {@link ShopDelivery}.
+ *
  * Created by savetisyan on 05/09/15.
  */
 
