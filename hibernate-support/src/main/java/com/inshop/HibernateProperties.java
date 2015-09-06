@@ -26,7 +26,8 @@ public class HibernateProperties {
     @Value("${test.hibernate.dialect}")
     private String dialectTest;
 
-    @Bean
+
+    @Bean(name = "hibernateProperty")
     @Profile("dev")
     public Properties devHibernateProperties() {
         Properties properties = new Properties();
@@ -35,7 +36,7 @@ public class HibernateProperties {
         return properties;
     }
 
-    @Bean
+    @Bean(name = "hibernateProperty")
     @Profile("test")
     public Properties testHibernateProperties() {
         Properties properties = new Properties();

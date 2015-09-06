@@ -1,23 +1,27 @@
 package com.inshop;
 
-import com.inshop.entity.*;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by savetisyan on 06/09/15.
  */
 @Configuration
 @ComponentScan("com.inshop")
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:config.properties")
+@Import(HibernateProperties.class)
 @EnableTransactionManagement
 public class HibernateConfig {
     @Value("${db.driver}")
@@ -32,27 +36,19 @@ public class HibernateConfig {
     @Value("${db.password}")
     private String password;
 
+    @Autowired
+    @Qualifier("hibernateProperty")
+    private Properties hibernateProperties;
+
     @Bean
-    public SessionFactory sessionFactory() {
-        return new LocalSessionFactoryBuilder(dataSource())
-                .addAnnotatedClasses(
-                        AdditionalField.class,
-                        Cart.class,
-                        Category.class,
-                        Customer.class,
-                        DeliveryType.class,
-                        Order.class,
-                        OrderDelivery.class,
-                        Product.class,
-                        ProductPackage.class,
-                        Shop.class,
-                        ShopDelivery.class,
-                        Status.class,
-                        Theme.class,
-                        User.class)
-                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                //.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect") TODO: uncomment when use postgres
-                .buildSessionFactory();
+    public SessionFactory sessionFactory() throws IOException {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.inshop.entity");
+        sessionFactory.setHibernateProperties(hibernateProperties);
+        sessionFactory.afterPropertiesSet();
+
+        return sessionFactory.getObject();
     }
 
     @Bean
@@ -67,7 +63,7 @@ public class HibernateConfig {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager() {
+    public HibernateTransactionManager transactionManager() throws IOException {
         HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
         hibernateTransactionManager.setSessionFactory(sessionFactory());
         return hibernateTransactionManager;
