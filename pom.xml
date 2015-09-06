@@ -19,19 +19,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Maven dependencies versions -->
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <slf4j.version>1.7.2</slf4j.version>
         <logback.version>1.0.9</logback.version>
         <junit.version>4.10</junit.version>
         <powermock.version>1.4.12</powermock.version>
         <mockito.version>1.9.0</mockito.version>
-        <spring.version>4.0.5.RELEASE</spring.version>
+        <spring.version>4.2.1.RELEASE</spring.version>
         <spring.security.version>3.2.4.RELEASE</spring.security.version>
         <metrics.version>3.0.1</metrics.version>
         <jackson.version>2.4.0</jackson.version>
         <gson.version>2.2.2</gson.version>
         <http-request.version>5.4</http-request.version>
-        <spring-data.version>1.5.1.RELEASE</spring-data.version>
+        <spring-data.version>1.10.2.RELEASE</spring-data.version>
         <jetty.version>9.3.3.v20150827</jetty.version>
 
         <!-- The following are for services deployment and configuration -->
@@ -48,6 +48,7 @@
         <!-- To be overridden in env profiles -->
         <service.profiles>development</service.profiles>
         <service.remote_debug>false</service.remote_debug>
+        <hibernate-core.version>5.0.1.Final</hibernate-core.version>
     </properties>
 
     <profiles>
@@ -77,6 +78,30 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring-data.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-webapp</artifactId>
