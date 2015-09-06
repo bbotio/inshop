@@ -12,6 +12,7 @@
 
     <modules>
         <module>service-support</module>
+        <module>hibernate-support</module>
     </modules>
 
     <properties>

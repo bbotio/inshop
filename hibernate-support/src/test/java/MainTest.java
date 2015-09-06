@@ -4,20 +4,25 @@ import com.inshop.entity.Shop;
 import com.inshop.entity.User;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created by savetisyan on 06/09/15.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = HibernateConfig.class)
+@ActiveProfiles("test")
 public class MainTest {
+    @Autowired
     GenericDao dao;
-
-    @Before
-    public void setup() {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(HibernateConfig.class);
-        dao = ctx.getBean(GenericDao.class);
-    }
 
     @Test
     public void testName() throws Exception {
@@ -37,6 +42,6 @@ public class MainTest {
         dao.save(user);
 
         User read = dao.get(User.class, user.getId());
-        System.out.println(read);
+        System.err.println(read);
     }
 }
