@@ -12,6 +12,8 @@
 
     <modules>
         <module>service-support</module>
+        <module>web-support</module>
+        <module>inshop-service</module>
         <module>hibernate-support</module>
     </modules>
 
@@ -34,6 +36,7 @@
         <http-request.version>5.4</http-request.version>
         <spring-data.version>1.10.2.RELEASE</spring-data.version>
         <jetty.version>9.3.3.v20150827</jetty.version>
+        <freemarker.version>2.3.20</freemarker.version>
 
         <!-- The following are for services deployment and configuration -->
         <service.name>${project.artifactId}</service.name>
@@ -79,6 +82,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Freemarker template engine -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -102,7 +112,6 @@
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-webapp</artifactId>
@@ -354,14 +363,12 @@
     <build>
         <resources>
             <resource>
-                <!-- Enabled filtering for all non-web resources -->
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <!-- Place web resources to the root of target directory, not inside classes -->
                 <directory>src/main/webapp</directory>
-                <targetPath>${project.build.directory}/webapp</targetPath>
+                <targetPath>${project.build.directory}/classes/webapp</targetPath>
             </resource>
         </resources>
 

@@ -1,13 +1,7 @@
 package com.inshop.service;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.lang.management.ManagementFactory;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.inshop.config.CommonConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -18,6 +12,13 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePropertySource;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.management.ManagementFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Aleksei Kornev
@@ -43,12 +44,7 @@ public class ServiceLauncher {
             ctx.scan(CONFIG_PACKAGE);
 
             configure(ctx);
-            daemonize(new Runnable() {
-                @Override
-                public void run() {
-                    ctx.close();
-                }
-            });
+            daemonize(ctx::close);
 
             ctx.refresh();
 
