@@ -4,13 +4,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * This class is something like {@link AdditionalField} for {@link Product}.
+ * This class store additional parameters from user-defined url in product description.
+ *
+ * Every product image in instagram must have an url to the user's shop, e.g:
+ * http://shopname.inshop.com/index.html?category=tshirt&size=xxl&param1=value1&...
+ * all parameters and values after mandatory parameters like category and size will be stored
+ * in {@link AdditionalField}.
+ *
+ * Also this class contains reference to product object.
  *
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "ShopDelivery")
-public class ShopDelivery implements Serializable {
+public class AdditionalField implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -48,10 +54,9 @@ public class ShopDelivery implements Serializable {
 
     @Override
     public String toString() {
-        return "ShopDelivery{" +
+        return "AdditionalField{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+                ", value='" + value + '}';
     }
 }

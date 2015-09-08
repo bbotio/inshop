@@ -3,6 +3,7 @@ package com.inshop.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Base class for product.
@@ -17,7 +18,6 @@ import java.time.LocalDateTime;
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "Product")
 public class Product implements Serializable {
     @Id
     @GeneratedValue
@@ -49,6 +49,10 @@ public class Product implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_package_id", referencedColumnName = "id")
     private ProductPackage productPackage;
+
+    @OneToMany
+    @JoinColumn(name = "additional_field_id", referencedColumnName = "id")
+    private Set<AdditionalField> additionalFields;
 
     public String getName() {
         return name;
@@ -122,6 +126,14 @@ public class Product implements Serializable {
         this.productPackage = productPackage;
     }
 
+    public Set<AdditionalField> getAdditionalFields() {
+        return additionalFields;
+    }
+
+    public void setAdditionalFields(Set<AdditionalField> additionalFields) {
+        this.additionalFields = additionalFields;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -134,6 +146,7 @@ public class Product implements Serializable {
                 ", date=" + date +
                 ", shop=" + shop +
                 ", productPackage=" + productPackage +
+                ", additionalFields=" + additionalFields +
                 '}';
     }
 }

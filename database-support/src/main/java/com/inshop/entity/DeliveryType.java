@@ -11,7 +11,6 @@ import java.io.Serializable;
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "DeliveryType")
 public class DeliveryType implements Serializable {
     @Id
     @GeneratedValue
@@ -23,10 +22,6 @@ public class DeliveryType implements Serializable {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
-    private ShopDelivery shopDelivery;
 
     public int getId() {
         return id;
@@ -52,21 +47,11 @@ public class DeliveryType implements Serializable {
         this.description = description;
     }
 
-    public ShopDelivery getShopDelivery() {
-        return shopDelivery;
-    }
-
-    public void setShopDelivery(ShopDelivery shopDelivery) {
-        this.shopDelivery = shopDelivery;
-    }
-
     @Override
     public String toString() {
         return "DeliveryType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", shopDelivery=" + shopDelivery +
-                '}';
+                ", description='" + description + '}';
     }
 }

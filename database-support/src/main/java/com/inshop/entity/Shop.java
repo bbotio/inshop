@@ -2,6 +2,7 @@ package com.inshop.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Base class for user's shop.
@@ -17,7 +18,6 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "Shop")
 public class Shop implements Serializable {
     @Id
     @GeneratedValue
@@ -37,9 +37,9 @@ public class Shop implements Serializable {
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
-    private ShopDelivery shopDelivery;
+    private Set<ShopDelivery> shopDelivery;
 
     public int getId() {
         return id;
@@ -81,11 +81,11 @@ public class Shop implements Serializable {
         this.theme = theme;
     }
 
-    public ShopDelivery getShopDelivery() {
+    public Set<ShopDelivery> getShopDelivery() {
         return shopDelivery;
     }
 
-    public void setShopDelivery(ShopDelivery shopDelivery) {
+    public void setShopDelivery(Set<ShopDelivery> shopDelivery) {
         this.shopDelivery = shopDelivery;
     }
 

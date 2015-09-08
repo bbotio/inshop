@@ -4,20 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * This class store additional parameters from user-defined url in product description.
+ * Base class for product category.
  *
- * Every product image in instagram must has url to user's shop, e.g:
- * http://<domain>.inshop.com/index.html?category=<category>&size=<size>&param1=value1&...
- * all parameters and values after mandatory parameters like category and size will be stored
- * in {@link AdditionalField}.
- *
- * Also this class contains reference to product object.
+ * Every category has a {@link Category#name} (shoes, t-shirts and etc.) and {@link Category#product}.
+ * Each category can has more than one product.
  *
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "AdditionalField")
-public class AdditionalField implements Serializable {
+public class Category implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -25,9 +20,6 @@ public class AdditionalField implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "value")
-    private String value;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -49,14 +41,6 @@ public class AdditionalField implements Serializable {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public Product getProduct() {
         return product;
     }
@@ -67,10 +51,9 @@ public class AdditionalField implements Serializable {
 
     @Override
     public String toString() {
-        return "AdditionalField{" +
+        return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", value='" + value + '\'' +
                 ", product=" + product +
                 '}';
     }

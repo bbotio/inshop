@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "Cart")
 public class Cart implements Serializable {
     @Id
     @GeneratedValue
