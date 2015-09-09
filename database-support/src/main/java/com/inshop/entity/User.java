@@ -12,7 +12,6 @@ import java.io.Serializable;
  * Created by savetisyan on 05/09/15.
  */
 @Entity
-@Table(name = "user_table")
 public class User implements Serializable {
     @Id
     @GeneratedValue
