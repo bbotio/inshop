@@ -7,7 +7,7 @@
         <artifactId>inshop</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>inhop-service</artifactId>
+    <artifactId>inshop-service</artifactId>
     <name>Inshop main service</name>
 
     <dependencies>
@@ -19,6 +19,11 @@
         <dependency>
             <groupId>com.inshop</groupId>
             <artifactId>web-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.inshop</groupId>
+            <artifactId>database-support</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
