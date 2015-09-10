@@ -26,6 +26,10 @@
             <artifactId>database-support</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sachinhandiekar</groupId>
+            <artifactId>jInstagram</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
