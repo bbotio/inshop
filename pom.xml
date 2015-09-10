@@ -39,6 +39,7 @@
         <freemarker.version>2.3.20</freemarker.version>
         <postgresql.version>9.4-1202-jdbc42</postgresql.version>
         <hibernate-core.version>5.0.1.Final</hibernate-core.version>
+        <jInstagram.version>1.0.10</jInstagram.version>
 
         <!-- The following are for services deployment and configuration -->
         <service.name>${project.artifactId}</service.name>
@@ -88,6 +89,12 @@
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
                 <version>${freemarker.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sachinhandiekar</groupId>
+                <artifactId>jInstagram</artifactId>
+                <version>${jInstagram.version}</version>
             </dependency>
 
             <dependency>
