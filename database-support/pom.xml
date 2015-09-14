@@ -15,6 +15,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.sachinhandiekar</groupId>
+            <artifactId>jInstagram</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>

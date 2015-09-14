@@ -1,5 +1,7 @@
 package com.inshop.entity;
 
+import org.jinstagram.auth.model.Token;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -19,7 +21,7 @@ public class User implements Serializable {
     private int id;
 
     @Column(name = "instagram_token")
-    private String instagramToken;
+    private Token instagramToken;
 
     @Column(name = "email")
     private String email;
@@ -36,11 +38,11 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getInstagramToken() {
+    public Token getInstagramToken() {
         return instagramToken;
     }
 
-    public void setInstagramToken(String instagramToken) {
+    public void setInstagramToken(Token instagramToken) {
         this.instagramToken = instagramToken;
     }
 
