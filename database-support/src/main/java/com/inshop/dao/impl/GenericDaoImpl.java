@@ -1,5 +1,7 @@
-package com.inshop.dao;
+package com.inshop.dao.impl;
 
+import com.inshop.dao.GenericDao;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,31 +16,46 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class GenericDaoImpl implements GenericDao {
+public class GenericDaoImpl<T> implements GenericDao<T> {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
-
-    public <T> void save(T t) {
+    @Override
+    public void save(T t) {
         getCurrentSession().save(t);
     }
 
-    public <T, ID extends Serializable> T get(Class<T> type, ID id) {
+    @Override
+    public T get(Class<T> type, Integer id) {
         return getCurrentSession().get(type, id);
     }
 
-    public <T> void update(T t) {
+    @Override
+    public void update(T t) {
         getCurrentSession().update(t);
     }
 
-    public <T> void remove(T t) {
+    @Override
+    public void remove(T t) {
         getCurrentSession().delete(t);
     }
 
-    public <T> List<T> findAll(Class<T> type) {
+    @Override
+    public List<T> findAll(Class<T> type) {
         return getCurrentSession().createCriteria(type).list();
+    }
+
+    @Override
+    public List<T> findMany(Query query) {
+        return query.list();
+    }
+
+    @Override
+    public T findOne(Query query) {
+        return (T) query.uniqueResult();
+    }
+
+    protected Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 }

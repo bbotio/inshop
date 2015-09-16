@@ -20,6 +20,9 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private int id;
 
+    @Column(name = "user_id")
+    private String userId;
+
     @Column(name = "instagram_token")
     private Token instagramToken;
 
@@ -60,6 +63,14 @@ public class User implements Serializable {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
