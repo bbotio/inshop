@@ -21,6 +21,7 @@
         <dependency>
             <groupId>com.inshop</groupId>
             <artifactId>database-support</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     
