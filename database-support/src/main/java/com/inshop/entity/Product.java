@@ -31,10 +31,10 @@ public class Product implements Serializable {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private Price price;
 
     @Column(name = "tags")
-    private String tags;
+    private Set<String> tags;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -54,13 +54,9 @@ public class Product implements Serializable {
     @JoinColumn(name = "additional_field_id", referencedColumnName = "id")
     private Set<AdditionalField> additionalFields;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @OneToMany
+    @JoinColumn(name = "categories_id", referencedColumnName = "id")
+    private Set<Category> categories;
 
     public int getId() {
         return id;
@@ -68,6 +64,14 @@ public class Product implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -78,19 +82,19 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Price getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Price price) {
         this.price = price;
     }
 
-    public String getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -132,6 +136,14 @@ public class Product implements Serializable {
 
     public void setAdditionalFields(Set<AdditionalField> additionalFields) {
         this.additionalFields = additionalFields;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
