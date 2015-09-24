@@ -26,6 +26,11 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
     }
 
     @Override
+    public void persist(T t) {
+        getCurrentSession().persist(t);
+    }
+
+    @Override
     public T get(Class<T> type, Integer id) {
         return getCurrentSession().get(type, id);
     }

@@ -100,4 +100,29 @@ public class Shop implements Serializable {
                 ", shopDelivery=" + shopDelivery +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Shop shop = (Shop) o;
+
+        if (domain != null ? !domain.equals(shop.domain) : shop.domain != null) return false;
+        if (title != null ? !title.equals(shop.title) : shop.title != null) return false;
+        if (description != null ? !description.equals(shop.description) : shop.description != null) return false;
+        if (theme != null ? !theme.equals(shop.theme) : shop.theme != null) return false;
+        return !(shopDelivery != null ? !shopDelivery.equals(shop.shopDelivery) : shop.shopDelivery != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = domain != null ? domain.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (theme != null ? theme.hashCode() : 0);
+        result = 31 * result + (shopDelivery != null ? shopDelivery.hashCode() : 0);
+        return result;
+    }
 }

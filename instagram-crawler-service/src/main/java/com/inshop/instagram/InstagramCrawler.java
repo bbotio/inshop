@@ -2,7 +2,7 @@ package com.inshop.instagram;
 
 import com.inshop.Crawler;
 import com.inshop.Filter;
-import com.inshop.ParsedImage;
+import com.inshop.entity.Product;
 import com.inshop.entity.User;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
@@ -10,10 +10,14 @@ import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
+
+import static com.inshop.ProductFactory.buildProducts;
 
 /**
  * Created by savetisyan on 14/09/15.
@@ -38,7 +42,7 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
     }
 
     @Override
-    public List<ParsedImage<MediaFeedData>> getShopItems(Filter<MediaFeedData> filter) {
+    public List<List<Product>> getShopItems(Filter<MediaFeedData> filter) {
         return getItems().stream()
                 .filter(filter::filter)
                 .map(image -> {
@@ -46,11 +50,10 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
                         String domain = user.getShop().getDomain();
                         InstagramFilter instagramFilter = new InstagramFilter(domain);
                         Matcher matcher = instagramFilter.getCompiledPattern().matcher(image.getCaption().getText());
-                        return new ParsedImage<>(new URL(matcher.group()), image);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                        return buildProducts(image, new URL(matcher.group()));
+                    } catch (MalformedURLException | URISyntaxException e) {
                     }
-                    return null;
+                    return new ArrayList<Product>();
                 })
                 .collect(Collectors.toList());
     }

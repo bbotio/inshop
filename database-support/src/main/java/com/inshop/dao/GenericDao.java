@@ -9,6 +9,8 @@ import java.util.List;
 public interface GenericDao<T> {
     void save(T t);
 
+    void persist(T t);
+
     T get(Class<T> type, Integer id);
 
     void update(T t);

@@ -42,6 +42,7 @@
         <hibernate-core.version>5.0.1.Final</hibernate-core.version>
         <jInstagram.version>1.0.10</jInstagram.version>
         <freemarker-template-inheritance.version>0.4.RELEASE</freemarker-template-inheritance.version>
+        <httpclient.version>4.2.5</httpclient.version>
 
         <!-- The following are for services deployment and configuration -->
         <service.name>${project.artifactId}</service.name>
@@ -79,6 +80,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
             <!-- Freemarker template engine -->
             <dependency>
                 <groupId>org.freemarker</groupId>

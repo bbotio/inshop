@@ -8,6 +8,7 @@ import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.auth.oauth.InstagramService;
+import org.jinstagram.entity.users.basicinfo.UserInfoData;
 import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -33,9 +34,6 @@ public class LoginController {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private ShopDao shopDao;
-
     @RequestMapping(method = GET)
     public String login(ModelMap params, HttpSession session) {
         Instagram instagram = (Instagram) session.getAttribute("instagram");
@@ -60,24 +58,24 @@ public class LoginController {
         Instagram instagram = new Instagram(accessToken);
         session.setAttribute("instagram", instagram);
 
-        String userId = instagram.getCurrentUserInfo().getData().getId();
+        UserInfoData userInfo = instagram.getCurrentUserInfo().getData();
+
+        String userId = userInfo.getId();
         User user = userDao.getById(userId);
 
         if (user == null) {
             user = new User();
             user.setUserId(userId);
             user.setInstagramToken(accessToken);
-            user.setEmail("myemail");
 
             Shop shop = new Shop();
-            shop.setDomain(instagram.getCurrentUserInfo().getData().getUsername() + ".inshop.com");
-            shop.setTitle("title");
-            shop.setDescription("desc");
-            shopDao.save(shop);
+            shop.setDomain(userInfo.getUsername() + ".inshop.com");
+            shop.setTitle(userInfo.getFullName());
+            shop.setDescription(userInfo.getBio());
 
             user.setShop(shop);
-            userDao.save(user);
-        } else if (user.getInstagramToken() == null) {
+            userDao.persist(user);
+        } else {
             user.setInstagramToken(accessToken);
             userDao.update(user);
         }

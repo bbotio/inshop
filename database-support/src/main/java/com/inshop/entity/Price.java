@@ -1,14 +1,27 @@
 package com.inshop.entity;
 
 
+import javax.persistence.*;
+
 /**
  * Created by Avetisyan Sevak
  * Date: 20.09.2015
  * Time: 23:53
  */
+@Entity
 public class Price {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
+    private int id;
+
     private double price;
+
+    @Enumerated(EnumType.STRING)
     private Currency currency;
+
+    public Price() {
+    }
 
     public Price(double price, Currency currency) {
         this.price = price;
@@ -31,13 +44,42 @@ public class Price {
         this.currency = currency;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public enum Currency {
-        EU("Euro"), RU("Rubles"), USD("dollars");
+        EU, RUB, USD
+    }
 
-        String name;
+    @Override
+    public String toString() {
+        return String.format("%.2f %s", price, currency.name());
+    }
 
-        Currency(String name) {
-            this.name = name;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Price price1 = (Price) o;
+
+        if (Double.compare(price1.price, price) != 0) return false;
+        return currency == price1.currency;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(price);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        return result;
     }
 }

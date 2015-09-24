@@ -1,42 +1,59 @@
-import com.inshop.Utils;
-import com.inshop.entity.Product;
 import com.inshop.instagram.InstagramFilter;
+import junit.framework.Assert;
 import org.jinstagram.entity.common.Caption;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.junit.Before;
 import org.junit.Test;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
 
 /**
  * Created by savetisyan on 15/09/15.
  */
 public class ValidatorTest {
-    @Test
-    public void testValidUrl() throws Exception {
-        InstagramFilter instagramFilter = new InstagramFilter("inshop.com");
-        MediaFeedData mediaFeedData = new MediaFeedData();
-        Caption caption = new Caption();
-        caption.setText("https://inshop.com");
-        mediaFeedData.setCaption(caption);
+    private String hostname = "inshop.com";
+    private InstagramFilter instagramFilter = new InstagramFilter(hostname);
+    private Caption caption;
+    private MediaFeedData mediaFeedData;
 
-        System.out.println(instagramFilter.filter(mediaFeedData));
+    @Before
+    public void setUp() throws Exception {
+        mediaFeedData = new MediaFeedData();
+        caption = new Caption();
+        mediaFeedData.setCaption(caption);
     }
 
     @Test
-    public void parse() throws MalformedURLException {
-        URL url = new URL("http://sevak.inshop.com?category=shoes,fashion&size=xxl&count=1&color=red&price=1&currency=EU");
-        MediaFeedData mediaFeedData = new MediaFeedData();
-        Caption caption = new Caption();
-        caption.setText("https://inshop.com");
-        caption.setCreatedTime("71267381628");
-        mediaFeedData.setCaption(caption);
-        mediaFeedData.setTags(Arrays.asList("123", "tah1", "as8"));
-        mediaFeedData.setLink("link to image");
+    public void testValidUrl1() throws Exception {
+        caption.setText("Some description of product and link to site: https://inshop.com");
+        Assert.assertTrue("There should be an url with hostname " + hostname + " in image description",
+                instagramFilter.filter(mediaFeedData));
+    }
 
-        Product product = Utils.buildProduct(mediaFeedData, url);
-        System.out.println(product);
+    @Test
+    public void testValidUrl2() throws Exception {
+        caption.setText("Some description of product and link to site: https://inshop.com/category=shoes " +
+                "https://inshop.com/price=1");
+        Assert.assertTrue("There should be an url with hostname " + hostname + " in image description",
+                instagramFilter.filter(mediaFeedData));
+    }
 
+    @Test
+    public void testInvalidUrl1() throws Exception {
+        caption.setText("Some description of produst and link to site: https://inshsop.com");
+        Assert.assertFalse("There shouldn't be url with hostname " + hostname + " in image description",
+                instagramFilter.filter(mediaFeedData));
+    }
+
+    @Test
+    public void testInvalidUrl2() throws Exception {
+        caption.setText("Some description of produst and link to site: http://anothersite.com");
+        Assert.assertFalse("There shouldn't be url with hostname " + hostname + " in image description",
+                instagramFilter.filter(mediaFeedData));
+    }
+
+    @Test
+    public void testInvalidUrl3() throws Exception {
+        caption.setText("Some description of produst and link to site: <ups, where is the link?>");
+        Assert.assertFalse("There shouldn't be url with hostname " + hostname + " in image description",
+                instagramFilter.filter(mediaFeedData));
     }
 }

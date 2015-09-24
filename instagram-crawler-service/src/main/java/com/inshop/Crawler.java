@@ -1,5 +1,7 @@
 package com.inshop;
 
+import com.inshop.entity.Product;
+
 import java.util.List;
 
 /**
@@ -8,5 +10,5 @@ import java.util.List;
 public interface Crawler<T> {
     List<T> getItems();
 
-    List<ParsedImage<T>> getShopItems(Filter<T> filter);
+    List<List<Product>> getShopItems(Filter<T> filter);
 }
