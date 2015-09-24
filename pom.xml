@@ -76,13 +76,6 @@
         </profile>
     </profiles>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <!-- Freemarker template engine -->
@@ -404,6 +397,7 @@
                         <appendAssemblyId>false</appendAssemblyId>
                         <descriptors>
                             <descriptor>../misc/assembly.xml</descriptor>
+                            <descriptor>../misc/docker_assembly.xml</descriptor>
                         </descriptors>
                     </configuration>
                     <executions>
@@ -444,6 +438,7 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>

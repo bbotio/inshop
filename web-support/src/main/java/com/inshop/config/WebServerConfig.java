@@ -21,7 +21,7 @@ import java.io.IOException;
 @Configuration
 public class WebServerConfig {
 
-    @Value("${web_host:localhost}")
+    @Value("${web_host:0.0.0.0}")
     private String host;
 
     @Value("${web_port:8080}")

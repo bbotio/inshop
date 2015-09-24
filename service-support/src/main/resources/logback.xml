@@ -36,6 +36,7 @@
 
     <root level="INFO">
         <appender-ref ref="ROLLING_FILE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
  </configuration>
