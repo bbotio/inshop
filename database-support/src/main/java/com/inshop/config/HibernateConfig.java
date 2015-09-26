@@ -1,8 +1,10 @@
 package com.inshop.config;
 
+import com.inshop.dao.GenericDao;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -18,6 +20,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackageClasses = GenericDao.class)
 public class HibernateConfig {
     @Value("${db.driver:org.postgresql.Driver}")
     private String dbDriver;

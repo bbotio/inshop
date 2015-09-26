@@ -54,5 +54,24 @@ public class Theme implements Serializable {
                 ", id=" + id +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Theme theme = (Theme) o;
+
+        if (name != null ? !name.equals(theme.name) : theme.name != null) return false;
+        return !(path != null ? !path.equals(theme.path) : theme.path != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        return result;
+    }
 }
 

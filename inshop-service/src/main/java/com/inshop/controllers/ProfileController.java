@@ -22,6 +22,10 @@ public class ProfileController {
     @RequestMapping(method = GET)
     public String profile(ModelMap params, HttpSession session) throws InstagramException {
         Instagram instagram = (Instagram) session.getAttribute("instagram");
+        if(instagram == null) {
+            return "redirect:/login";
+        }
+
         params.addAttribute("user", instagram.getCurrentUserInfo().getData());
         return "/profile";
     }

@@ -28,6 +28,14 @@ public class AdditionalField implements Serializable {
     @Column(name = "value")
     private String value;
 
+    public AdditionalField() {
+    }
+
+    public AdditionalField(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
     public int getId() {
         return id;
     }

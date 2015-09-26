@@ -1,5 +1,7 @@
 package com.inshop.entity;
 
+import org.jinstagram.auth.model.Token;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,13 +20,16 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private int id;
 
+    @Column(name = "user_id")
+    private String userId;
+
     @Column(name = "instagram_token")
-    private String instagramToken;
+    private Token instagramToken;
 
     @Column(name = "email")
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
@@ -36,11 +41,11 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getInstagramToken() {
+    public Token getInstagramToken() {
         return instagramToken;
     }
 
-    public void setInstagramToken(String instagramToken) {
+    public void setInstagramToken(Token instagramToken) {
         this.instagramToken = instagramToken;
     }
 
@@ -58,6 +63,14 @@ public class User implements Serializable {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
