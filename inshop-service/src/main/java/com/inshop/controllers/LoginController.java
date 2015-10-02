@@ -38,7 +38,7 @@ public class LoginController {
     public String login(ModelMap params, HttpSession session) {
         Instagram instagram = (Instagram) session.getAttribute("instagram");
         if (instagram != null) {
-            return "redirect:/profile";
+            return "redirect:/setup";
         }
 
         String authorizationUrl = service.getAuthorizationUrl(null);
@@ -80,6 +80,6 @@ public class LoginController {
             userDao.update(user);
         }
 
-        return "redirect:/profile";
+        return "redirect:/setup";
     }
 }
