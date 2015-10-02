@@ -33,16 +33,16 @@ public class InstagramScheduler {
     @Qualifier("genericDaoImpl")
     private GenericDao productDao;
 
-    @Value("${scheduler.threads}")
+    @Value("${scheduler.threads:1}")
     private int schedulerThreadsCount;
 
-    @Value("${threadpool.threads}")
+    @Value("${threadpool.threads:4}")
     private int threadPoolThreadsCount;
 
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(schedulerThreadsCount);
-    private ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(threadPoolThreadsCount);
 
     public void init() {
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(schedulerThreadsCount);
+        final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(threadPoolThreadsCount);
         executor.schedule(() -> {
             for (User user : userDao.findAll(User.class)) {
                 threadPoolExecutor.submit(() -> {
