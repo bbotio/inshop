@@ -16,8 +16,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @Controller
 @Scope("session")
-@RequestMapping("/profile")
-public class ProfileController {
+@RequestMapping("/setup")
+public class SetupController {
 
     @RequestMapping(method = GET)
     public String profile(ModelMap params, HttpSession session) throws InstagramException {
@@ -27,6 +27,6 @@ public class ProfileController {
         }
 
         params.addAttribute("user", instagram.getCurrentUserInfo().getData());
-        return "/profile";
+        return "setup";
     }
 }
