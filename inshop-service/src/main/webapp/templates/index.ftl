@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Promo Landing Page</title>
+    <title>InShop</title>
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
     <meta name="description" content="make shop from your instagram account">
     <meta name="author" content="Aleksei Kornev">
