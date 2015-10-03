@@ -31,7 +31,7 @@
         <div class="navbar">
             <ul class="nav navbar-nav navbar-right pull-right">
                 <@layout.block name="top">
-                    <li class="hidden-xs"><a href="login.html"><i class="fa fa-sign-out"></i></a></li>
+                    <li class="hidden-xs"><a href="/"><i class="fa fa-sign-out"></i></a></li>
                 </@layout.block>
             </ul>
         </div>

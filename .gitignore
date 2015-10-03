@@ -26,3 +26,4 @@ log
 .project
 .settings
 .metadata
+.DS_Store
