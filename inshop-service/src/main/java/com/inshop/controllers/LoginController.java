@@ -34,23 +34,11 @@ public class LoginController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(method = GET)
-    public String login(ModelMap params, HttpSession session) {
-        Instagram instagram = (Instagram) session.getAttribute("instagram");
-        if (instagram != null) {
-            return "redirect:/setup";
-        }
-
-        String authorizationUrl = service.getAuthorizationUrl(null);
-        params.addAttribute("authorizationUrl", authorizationUrl);
-        return "/login";
-    }
-
     @RequestMapping(value = "/handleToken", method = GET)
     public String handleToken(HttpServletRequest request, HttpSession session) throws InstagramException {
         String code = request.getParameter("code");
         if (code == null) {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         Verifier verifier = new Verifier(code);

@@ -23,7 +23,7 @@ public class SetupController {
     public String profile(ModelMap params, HttpSession session) throws InstagramException {
         Instagram instagram = (Instagram) session.getAttribute("instagram");
         if(instagram == null) {
-            return "redirect:/login";
+            return "redirect:/";
         }
 
         params.addAttribute("user", instagram.getCurrentUserInfo().getData());
