@@ -28,14 +28,14 @@
                             </div>
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab1">
-                                    <form class="form-horizontal mt-sm" action='' method="POST">
+                                    <form class="form-horizontal mt-sm" action='/shop/details' method="POST">
                                         <fieldset>
                                             <div class="form-group">
                                                 <!-- Shop name-->
                                                 <label class="control-label col-md-3"  for="shop-name">Shop name</label>
                                                 <div class="col-md-8">
                                                     <div class="col-md-10">
-                                                        <input type="text" id="shop-name" name="shop-name" placeholder="" class="form-control">
+                                                        <input type="text" id="shop-name" name="shop-name" placeholder="" class="form-control" value="${shop.title}">
                                                         <span class="help-block">Name of your shop. Will be used in shop title, logo and so on. By default instagram name.</span>
                                                     </div>
                                                 </div>
@@ -46,7 +46,7 @@
                                                 <div class="col-md-8">
                                                     <div class="col-md-10">
                                                         <textarea id="shop-details" name="shop-details"
-                                                               placeholder="" class="form-control"></textarea>
+                                                               placeholder="" class="form-control">${shop.description}</textarea>
                                                         <span class="help-block">Details about your shop.By default instagram bio</span>
                                                     </div>
                                                 </div>
@@ -62,7 +62,7 @@
                                                 <label class="control-label col-md-3"  for="domain">domain</label>
                                                 <div class="col-md-8">
                                                     <div class="col-md-10">
-                                                        <input type="text" id="domain" name="domain" placeholder="" class="form-control">
+                                                        <input type="text" id="domain" name="domain" placeholder="" class="form-control" value="${shop.domain}">
                                                         <span class="help-block">Domain for your shop</span>
                                                     </div>
                                                 </div>
@@ -452,8 +452,9 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="tab8">
-                                    <h2>Thank you!</h2>
-                                    <p class="mb-lg">Your submission has been received.</p>
+                                    <div id="setup_tab_errors">
+                                    </div>
+                                    <p></p>
                                 </div>
                                 <div class="description ml mr mt-n-md">
                                     <ul class="pager wizard">

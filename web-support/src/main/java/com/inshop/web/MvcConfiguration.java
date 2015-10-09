@@ -8,16 +8,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -74,6 +78,17 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         freeMarkerViewResolver.setSuffix(".ftl");
         freeMarkerViewResolver.setContentType("text/html;charset=UTF-8");
         freeMarkerViewResolver.setExposeSpringMacroHelpers(true);
+        freeMarkerViewResolver.setOrder(1);
         return freeMarkerViewResolver;
+    }
+
+    @Bean
+    public ViewResolver jsonViewResolver() {
+        return new ViewResolver() {
+            @Override
+            public View resolveViewName(String s, Locale locale) throws Exception {
+                return new MappingJackson2JsonView();
+            }
+        };
     }
 }

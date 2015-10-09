@@ -22,4 +22,6 @@ public interface GenericDao<T> {
     List<T> findMany(Query query);
 
     T findOne(Query query);
+
+    void refresh(T t);
 }

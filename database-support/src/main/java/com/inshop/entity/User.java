@@ -20,8 +20,8 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "instagram_user_id")
+    private String instagramUserId;
 
     @Column(name = "instagram_token")
     private Token instagramToken;
@@ -29,8 +29,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner")
     private Shop shop;
 
     public int getId() {
@@ -65,12 +64,12 @@ public class User implements Serializable {
         this.shop = shop;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getInstagramUserId() {
+        return instagramUserId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setInstagramUserId(String instagramUserId) {
+        this.instagramUserId = instagramUserId;
     }
 
     @Override
