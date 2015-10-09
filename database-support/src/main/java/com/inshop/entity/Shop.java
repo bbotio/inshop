@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * Base class for user's shop.
+ * Base class for owner's shop.
  * User can choose subdomain in our domain (inshop.com), e.g.: http://sevakshop.inshop.com,
  * or specify his own domain name, e.g.: myshop.com
  *
@@ -40,6 +40,10 @@ public class Shop implements Serializable {
     @OneToMany
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private Set<ShopDelivery> shopDelivery;
+
+    @OneToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     public int getId() {
         return id;
@@ -87,6 +91,14 @@ public class Shop implements Serializable {
 
     public void setShopDelivery(Set<ShopDelivery> shopDelivery) {
         this.shopDelivery = shopDelivery;
+    }
+
+    public User getOwner(){
+        return this.owner;
+    }
+
+    public void setOwner(final User owner) {
+        this.owner = owner;
     }
 
     @Override

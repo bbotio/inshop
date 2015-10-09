@@ -60,6 +60,11 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
         return (T) query.uniqueResult();
     }
 
+    @Override
+    public void refresh(T t) {
+        getCurrentSession().refresh(t);
+    }
+
     protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }

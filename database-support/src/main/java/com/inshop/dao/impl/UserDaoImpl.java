@@ -20,16 +20,10 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public User getById(String userId) {
+    public User getByInstagrammUserId(final String instagrammUserId) {
         Query query = sessionFactory.getCurrentSession()
-                .createQuery("from User u where u.userId=:userId")
-                .setParameter("userId", userId);
-
-        List result = query.list();
-        if (!result.isEmpty()) {
-            return (User) result.get(0);
-        }
-
-        return null;
+                .createQuery("from User u where u.instagramUserId=:instagramUserId")
+                .setParameter("instagramUserId", instagrammUserId);
+        return (User) query.uniqueResult();
     }
 }

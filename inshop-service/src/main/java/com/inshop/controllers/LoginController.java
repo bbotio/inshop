@@ -1,6 +1,5 @@
 package com.inshop.controllers;
 
-import com.inshop.dao.ShopDao;
 import com.inshop.dao.UserDao;
 import com.inshop.entity.Shop;
 import com.inshop.entity.User;
@@ -13,7 +12,7 @@ import org.jinstagram.exceptions.InstagramException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,37 +35,46 @@ public class LoginController {
 
     @RequestMapping(value = "/handleToken", method = GET)
     public String handleToken(HttpServletRequest request, HttpSession session) throws InstagramException {
-        String code = request.getParameter("code");
+        final String code = request.getParameter("code");
         if (code == null) {
             return "redirect:/";
         }
 
-        Verifier verifier = new Verifier(code);
-        Token accessToken = service.getAccessToken(null, verifier);
-        Instagram instagram = new Instagram(accessToken);
-        session.setAttribute("instagram", instagram);
+        final Verifier verifier = new Verifier(code);
+        final Token accessToken = service.getAccessToken(null, verifier);
+        final Instagram instagram = new Instagram(accessToken);
 
-        UserInfoData userInfo = instagram.getCurrentUserInfo().getData();
 
-        String userId = userInfo.getId();
-        User user = userDao.getById(userId);
+        final UserInfoData userInfo = instagram.getCurrentUserInfo().getData();
 
+        final String userId = userInfo.getId();
+        User user = userDao.getByInstagrammUserId(userId);
+
+        //TODO: move it to some sort of service
         if (user == null) {
             user = new User();
-            user.setUserId(userId);
+            user.setInstagramUserId(userId);
             user.setInstagramToken(accessToken);
 
             Shop shop = new Shop();
-            shop.setDomain(userInfo.getUsername() + ".inshop.com");
+            //TODO: maybe we should use user website instead of making domain
+            final String domainName = userInfo.getUsername();
+            if (!StringUtils.isEmpty(domainName)) {
+                shop.setDomain(domainName.replaceAll("[^a-zA-Z0-9]*","") + ".inshop.com");
+            }
             shop.setTitle(userInfo.getFullName());
             shop.setDescription(userInfo.getBio());
 
+            shop.setOwner(user);
             user.setShop(shop);
+
             userDao.persist(user);
         } else {
             user.setInstagramToken(accessToken);
             userDao.update(user);
         }
+
+        session.setAttribute("user", user);
 
         return "redirect:/setup";
     }
