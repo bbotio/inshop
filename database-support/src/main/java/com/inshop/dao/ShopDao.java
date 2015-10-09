@@ -9,4 +9,6 @@ import com.inshop.entity.User;
 public interface ShopDao extends GenericDao<Shop> {
 
     Shop getUserShop(User user);
+
+    Shop getShopByDomain(final String domain);
 }
