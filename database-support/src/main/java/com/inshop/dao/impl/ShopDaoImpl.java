@@ -25,4 +25,12 @@ public class ShopDaoImpl extends GenericDaoImpl<Shop> implements ShopDao {
 
         return (Shop) query.uniqueResult();
     }
+
+    @Override
+    public Shop getShopByDomain(final String domain) {
+        final Query query = getCurrentSession().createQuery("from Shop s where s.domain=:domain");
+        query.setParameter("domain", domain);
+
+        return (Shop) query.uniqueResult();
+    }
 }

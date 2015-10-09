@@ -55,15 +55,16 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="tab2">
-                                    <form class="form-horizontal mt-sm" action='' method="POST">
+                                    <form class="form-horizontal mt-sm" action='/shop/domain' method="POST">
                                         <fieldset>
                                             <div class="form-group">
                                                 <!-- Domain -->
-                                                <label class="control-label col-md-3"  for="domain">domain</label>
+                                                <label class="control-label col-md-3"  for="domain">Domain</label>
                                                 <div class="col-md-8">
                                                     <div class="col-md-10">
                                                         <input type="text" id="domain" name="domain" placeholder="" class="form-control" value="${shop.domain}">
-                                                        <span class="help-block">Domain for your shop</span>
+                                                        <span class="help-block">Set domain for your shop</span>
+                                                        <span class="help-block">If you would like to use you own domain name. Put your domain name in field above and add CNAME record to your domain registrant that point to <strong>shop.inshop.yt</strong></span>
                                                     </div>
                                                 </div>
                                             </div>
