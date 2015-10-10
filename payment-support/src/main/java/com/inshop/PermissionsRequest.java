@@ -31,12 +31,11 @@ public class PermissionsRequest {
 
         RequestPermissionsRequest requestPermissionsRequest = new RequestPermissionsRequest(scopeList, callback);
         PermissionsService service = new PermissionsService(sdkProperties);
-        RequestPermissionsResponse requestPermissionsResponse = null;
-
+        RequestPermissionsResponse requestPermissionsResponse;
         try {
             requestPermissionsResponse = service.requestPermissions(requestPermissionsRequest);
         } catch (Exception e) {
-            LOGGER.warn("Error Message : " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return requestPermissionsResponse;
@@ -48,12 +47,11 @@ public class PermissionsRequest {
         getAccessTokenRequest.setVerifier(verifier);
 
         PermissionsService service = new PermissionsService(sdkProperties);
-        GetAccessTokenResponse getAccessTokenResponse = null;
-
+        GetAccessTokenResponse getAccessTokenResponse;
         try {
             getAccessTokenResponse = service.getAccessToken(getAccessTokenRequest);
         } catch (Exception e) {
-            LOGGER.warn("Error Message : " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return getAccessTokenResponse;

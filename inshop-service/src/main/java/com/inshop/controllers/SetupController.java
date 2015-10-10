@@ -1,17 +1,29 @@
 package com.inshop.controllers;
 
+import com.inshop.PayPalFactory;
+import com.inshop.PermissionsRequest;
 import com.inshop.dao.ShopDao;
 import com.inshop.dao.UserDao;
+import com.inshop.entity.PayPalToken;
 import com.inshop.entity.User;
-import org.jinstagram.Instagram;
-import org.jinstagram.exceptions.InstagramException;
+import com.paypal.core.credential.SignatureCredential;
+import com.paypal.core.credential.ThirdPartyAuthorization;
+import com.paypal.core.credential.TokenAuthorization;
+import com.paypal.svcs.types.perm.GetAccessTokenResponse;
+import com.paypal.svcs.types.perm.RequestPermissionsResponse;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Properties;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -22,19 +34,74 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Scope("session")
 @RequestMapping("/setup")
 public class SetupController {
+    private static final Logger LOGGER = LoggerFactory.logger(SetupController.class);
 
     @Autowired
     private ShopDao shopDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private PayPalFactory payPalFactory;
+
+    @Autowired
+    @Qualifier("grantPermissionsUrl")
+    private String grantPermissionsUrl;
+
     @RequestMapping(method = GET)
     public String profile(ModelMap params, HttpSession session) {
         final User user = (User) session.getAttribute("user");
-        if(user == null) {
+        if (user == null) {
             return "redirect:/";
         }
 
         params.addAttribute("user", user);
         params.addAttribute("shop", shopDao.getUserShop(user));
         return "setup";
+    }
+
+    @RequestMapping(value = "/payment", method = GET)
+    public String requestPaymentPermissions() {
+        RequestPermissionsResponse requestPermissionsResponse = payPalFactory.getPermissionsRequest().requestPermissions();
+        if (requestPermissionsResponse != null) {
+            if (requestPermissionsResponse.getToken() != null) {
+                return "redirect:" + grantPermissionsUrl + requestPermissionsResponse.getToken();
+            }
+
+            requestPermissionsResponse.getError().forEach(x -> LOGGER.warn(x.getMessage()));
+        }
+
+        return "redirect:/setup";
+    }
+
+    @RequestMapping(value = "/handlePermissions", method = GET)
+    public String handlePaymentPermissions(HttpServletRequest request, HttpSession session) {
+        String requestToken = request.getParameter("request_token");
+        String verificationCode = request.getParameter("verification_code");
+
+        if (requestToken != null && verificationCode != null) {
+            GetAccessTokenResponse accessToken = payPalFactory.getPermissionsRequest().getAccessToken(requestToken, verificationCode);
+
+            if(accessToken.getToken() != null && accessToken.getTokenSecret() != null) {
+                final User user = (User) session.getAttribute("user");
+                if (user == null) {
+                    return "redirect:/";
+                }
+
+                PayPalToken token = new PayPalToken(accessToken.getToken(), accessToken.getTokenSecret());
+                user.setPaypalToken(token);
+                userDao.update(user);
+
+                /*TODO: try to avoid using wrapper class (PayPalToken)
+                TokenAuthorization authorization = new TokenAuthorization(accessToken.getToken(), accessToken.getTokenSecret());
+                SignatureCredential cred = new SignatureCredential(paypalUsername, paypalPassword, paypalSignature);
+                cred.setApplicationId(paypalAppId);
+                cred.setThirdPartyAuthorization(authorization);*/
+
+            }
+        }
+
+        return "redirect:/setup";
     }
 }

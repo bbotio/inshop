@@ -84,11 +84,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     public ViewResolver jsonViewResolver() {
-        return new ViewResolver() {
-            @Override
-            public View resolveViewName(String s, Locale locale) throws Exception {
-                return new MappingJackson2JsonView();
-            }
-        };
+        return (s, locale) -> new MappingJackson2JsonView();
     }
 }

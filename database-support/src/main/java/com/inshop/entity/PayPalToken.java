@@ -1,14 +1,15 @@
 package com.inshop.entity;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
  * Wrapper for PayPal TokenAuthorization class
  * Created by savetisyan on 10/10/15.
  */
+@Embeddable
 public class PayPalToken implements Serializable {
     private String accessToken;
-
     private String tokenSecret;
 
     public PayPalToken() {

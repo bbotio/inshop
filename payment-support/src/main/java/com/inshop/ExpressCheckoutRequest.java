@@ -3,6 +3,7 @@ package com.inshop;
 import com.paypal.core.credential.SignatureCredential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import urn.ebay.api.PayPalAPI.*;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.*;
@@ -17,8 +18,8 @@ import java.util.Properties;
 public class ExpressCheckoutRequest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressCheckoutRequest.class);
 
-    private SignatureCredential signatureCredential;
     private Properties sdkProperties;
+    private SignatureCredential signatureCredential;
     private List<PaymentDetailsItemType> items;
     private SellerDetailsType sellerDetails;
     private AddressType shipToAddress;
@@ -59,11 +60,11 @@ public class ExpressCheckoutRequest {
         setExpressCheckoutReq.setSetExpressCheckoutRequest(setExpressCheckoutRequest);
 
         PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkProperties);
-        SetExpressCheckoutResponseType setExpressCheckoutResponse = null;
+        SetExpressCheckoutResponseType setExpressCheckoutResponse;
         try {
             setExpressCheckoutResponse = service.setExpressCheckout(setExpressCheckoutReq, signatureCredential);
         } catch (Exception e) {
-            LOGGER.warn("Error Message : " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return setExpressCheckoutResponse;
@@ -94,12 +95,13 @@ public class ExpressCheckoutRequest {
         doExpressCheckoutPaymentReq.setDoExpressCheckoutPaymentRequest(doExpressCheckoutPaymentRequest);
 
         PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkProperties);
-        DoExpressCheckoutPaymentResponseType doExpressCheckoutPaymentResponse = null;
+        DoExpressCheckoutPaymentResponseType doExpressCheckoutPaymentResponse;
         try {
             doExpressCheckoutPaymentResponse = service.doExpressCheckoutPayment(doExpressCheckoutPaymentReq, signatureCredential);
         } catch (Exception e) {
-            LOGGER.warn("Error Message : " + e.getMessage());
+            throw new RuntimeException(e);
         }
+
         return doExpressCheckoutPaymentResponse;
     }
 
@@ -109,13 +111,12 @@ public class ExpressCheckoutRequest {
 
         getExpressCheckoutDetailsReq.setGetExpressCheckoutDetailsRequest(getExpressCheckoutDetailsRequest);
         PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService(sdkProperties);
-        GetExpressCheckoutDetailsResponseType getExpressCheckoutDetailsResponse = null;
-
+        GetExpressCheckoutDetailsResponseType getExpressCheckoutDetailsResponse;
         try {
             getExpressCheckoutDetailsResponse =
                     service.getExpressCheckoutDetails(getExpressCheckoutDetailsReq, signatureCredential);
         } catch (Exception e) {
-            LOGGER.warn("Error Message : " + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return getExpressCheckoutDetailsResponse;

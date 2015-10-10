@@ -27,6 +27,7 @@ public class User implements Serializable {
     @Column(name = "instagram_token")
     private Token instagramToken;
 
+    @Embedded
     @Column(name = "paypal_token")
     private PayPalToken paypalToken;
 

@@ -22,14 +22,22 @@ public class IndexController {
     private InstagramService service;
 
     @RequestMapping(value = "/", method = GET)
-    public String index(ModelMap params, HttpSession session) {
+    public String index(HttpSession session) {
         Instagram instagram = (Instagram) session.getAttribute("instagram");
         if (instagram != null) {
             return "redirect:/setup";
         }
 
-        String authorizationUrl = service.getAuthorizationUrl(null);
-        params.addAttribute("authorizationUrl", authorizationUrl);
         return "index";
+    }
+
+    @RequestMapping(value = "/authorize", method = POST)
+    public String auth(HttpSession session) {
+        Instagram instagram = (Instagram) session.getAttribute("instagram");
+        if (instagram != null) {
+            return "redirect:/setup";
+        }
+
+        return "redirect:" + service.getAuthorizationUrl(null);
     }
 }
