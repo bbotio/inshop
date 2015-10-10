@@ -16,6 +16,7 @@
         <module>database-support</module>
         <module>inshop-service</module>
         <module>instagram-crawler-service</module>
+        <module>shop-service</module>
     </modules>
 
     <properties>
