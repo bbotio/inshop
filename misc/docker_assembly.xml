@@ -18,7 +18,7 @@
             <filtered>true</filtered>
         </file>
         <file>
-            <source>../misc/docker-compose.yml</source>
+            <source>${project.basedir}/src/main/scripts/docker-compose.yml</source>
             <destName>docker-compose.yml</destName>
             <filtered>true</filtered>
         </file>
