@@ -3,6 +3,7 @@ package com.inshop.controllers;
 import com.inshop.dao.ShopDao;
 import com.inshop.entity.Shop;
 import com.inshop.entity.User;
+import com.inshop.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;

@@ -8,17 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
+
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
  */
 @Configuration
+@ComponentScan(useDefaultFilters = false, basePackages = {"com.inshop"},
+        includeFilters = {@ComponentScan.Filter(WebFilter.class)})
 public class WebServerConfig {
 
     @Value("${web_host:0.0.0.0}")
@@ -29,6 +35,9 @@ public class WebServerConfig {
 
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private List<javax.servlet.Filter> filters;
 
     @Bean
     public WebAppContext jettyWebAppContext() throws IOException {
@@ -41,6 +50,7 @@ public class WebServerConfig {
         ctx.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed",
                 "false");
 
+
         /* Create the root web application context and set it as a servlet
          * attribute so the dispatcher servlet can find it. */
         GenericWebApplicationContext webApplicationContext =
@@ -52,7 +62,7 @@ public class WebServerConfig {
                 webApplicationContext);
 
 
-        ctx.addEventListener(new WebAppInitializer());
+        ctx.addEventListener(new WebAppInitializer(filters));
 
         return ctx;
     }
