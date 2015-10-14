@@ -6,18 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Created by savetisyan on 09/09/15.
- */
 @Configuration
 public class InstagramConfig {
-    @Value("${client_id}")
+    @Value("${instagram.client_id}")
     private String clientId;
 
-    @Value("${client_secret}")
+    @Value("${instagram.client_secret}")
     private String clientSecret;
 
-    @Value("${url:http://localhost:8080/login/handleToken}")
+    @Value("${instagram.handle_token:http://localhost:8080/login/handleToken}")
     private String url;
 
     @Bean

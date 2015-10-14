@@ -1,5 +1,6 @@
-package com.inshop;
+package com.inshop.config;
 
+import com.inshop.InstagramScheduler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

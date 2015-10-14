@@ -13,6 +13,11 @@
     <dependencies>
         <dependency>
             <groupId>com.inshop</groupId>
+            <artifactId>payment-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.inshop</groupId>
             <artifactId>service-support</artifactId>
             <version>${project.version}</version>
         </dependency>

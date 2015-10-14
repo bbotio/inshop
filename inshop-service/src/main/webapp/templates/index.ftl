@@ -31,9 +31,12 @@
 
                 <h1>The simple way to be closer to your customer</h1>
                 <h4>In one click turn your instagram account into a modern shop.</h4>
-                <p>
-                    <a href="${authorizationUrl}" class="login-button"></a>
-                </p>
+
+                <form id="form" action="/authorize" method="POST">
+                    <p>
+                        <a class="login-button" type="submit" onclick="$(this).closest('form').submit();"></a>
+                    </p>
+                </form>
 
                 <div class="clearfix"></div>
             </div>

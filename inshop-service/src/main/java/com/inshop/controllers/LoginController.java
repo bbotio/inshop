@@ -48,7 +48,7 @@ public class LoginController {
         final UserInfoData userInfo = instagram.getCurrentUserInfo().getData();
 
         final String userId = userInfo.getId();
-        User user = userDao.getByInstagrammUserId(userId);
+        User user = userDao.getByInstagramUserId(userId);
 
         //TODO: move it to some sort of service
         if (user == null) {

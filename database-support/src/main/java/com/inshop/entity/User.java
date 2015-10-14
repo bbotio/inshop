@@ -5,12 +5,13 @@ import org.jinstagram.auth.model.Token;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/** Base user entity.
+/**
+ * Base user entity.
  * Contains user's {@link User#email} and {@link User#instagramToken}.
  * Instagram token is required for fetching {@link Product}'s from user's instagram account.
  * Also user has direct reference to his {@link Shop}. Pay attention, that user can
  * has only one shop.
- *
+ * <p/>
  * Created by savetisyan on 05/09/15.
  */
 @Entity
@@ -25,6 +26,10 @@ public class User implements Serializable {
 
     @Column(name = "instagram_token")
     private Token instagramToken;
+
+    @Embedded
+    @Column(name = "paypal_token")
+    private PayPalToken paypalToken;
 
     @Column(name = "email")
     private String email;
@@ -72,11 +77,18 @@ public class User implements Serializable {
         this.instagramUserId = instagramUserId;
     }
 
+    public PayPalToken getPaypalToken() {
+        return paypalToken;
+    }
+
+    public void setPaypalToken(PayPalToken paypalToken) {
+        this.paypalToken = paypalToken;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", instagramToken='" + instagramToken + '\'' +
                 ", email='" + email + '\'' +
                 ", shop=" + shop +
                 '}';

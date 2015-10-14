@@ -33,10 +33,10 @@ public class InstagramScheduler {
     @Qualifier("genericDaoImpl")
     private GenericDao productDao;
 
-    @Value("${scheduler.threads:1}")
+    @Value("${crawler.scheduler.threads:1}")
     private int schedulerThreadsCount;
 
-    @Value("${threadpool.threads:4}")
+    @Value("${crawler.threadpool.threads:4}")
     private int threadPoolThreadsCount;
 
 
