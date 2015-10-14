@@ -23,8 +23,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Scope("session")
 @RequestMapping("/shop")
 public class ShopController {
-
     public static final String DOMAIN_PARAM = "domain";
+
     @Autowired
     private ShopDao shopDao;
 

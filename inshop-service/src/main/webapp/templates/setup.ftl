@@ -5,7 +5,7 @@
         <small>your shop</small>
     </h2>
     <div class="row">
-        <div class="col-lg-7 col-lg-offset-1">
+        <div class="col-lg-10">
             <section class="widget">
                 <header>
                     <h4>
@@ -128,9 +128,9 @@
                                     <div class="col-md-8">
                                         <div class="col-md-13">
                                             <form action="/setup/payment" method="GET">
-                                                <button type="submit" class="btn btn-success col-md-11">Grant permissions</button>
+                                                <button type="submit" class="btn btn-success col-md-8">Grant permissions</button>
                                             </form>
-                                            <span class="help-block">Grant permissions for PayPal Express Checkout.</span>
+                                            <span class="help-block pull-left">Grant permissions for PayPal Express Checkout.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -531,7 +531,7 @@
                                                 class="fa fa-caret-right"></i></button>
                                     </li>
                                     <li class="finish" style="display: none">
-                                        <button class="btn btn-success pull-right">Luanch<i class="fa fa-check"></i>
+                                        <button class="btn btn-success pull-right">Launch<i class="fa fa-check"></i>
                                         </button>
                                     </li>
                                 </ul>
