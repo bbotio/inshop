@@ -1,6 +1,7 @@
 package com.inshop.controllers;
 
 import com.inshop.dao.UserDao;
+import com.inshop.entity.Address;
 import com.inshop.entity.Shop;
 import com.inshop.entity.User;
 import com.inshop.utils.Consts;
@@ -55,6 +56,7 @@ public class LoginController {
         //TODO: move it to some sort of service
         if (user == null) {
             user = new User();
+            user.setAddress(new Address());
             user.setInstagramUserId(userId);
             user.setInstagramToken(tokenEntity);
 

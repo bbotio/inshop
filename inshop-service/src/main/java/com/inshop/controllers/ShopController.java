@@ -1,10 +1,13 @@
 package com.inshop.controllers;
 
 import com.inshop.dao.ShopDao;
+import com.inshop.dao.UserDao;
+import com.inshop.entity.Address;
 import com.inshop.entity.Shop;
 import com.inshop.entity.ShopAnalytics;
 import com.inshop.entity.User;
 import com.inshop.utils.Response;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -29,7 +32,18 @@ public class ShopController {
     public static final String SHOP_DETAILS = "shop-details";
     public static final String GOOGLE_ANALYTICS_ID = "google-analytics-id";
     public static final String SHOP_TAGS = "shop-tags";
+    public static final String EMAIL_PARAM = "email";
+    public static final String NAME_PARAM = "name";
+    public static final String PHONE_PARAM = "phone";
+    public static final String COUNTRY_PARAM = "country";
+    public static final String STATE_PARAM = "state";
+    public static final String CITY_PARAM = "city";
+    public static final String ADDRESS_PARAM = "address";
+    public static final String ZIP_PARAM = "zip";
 
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private ShopDao shopDao;
@@ -103,6 +117,61 @@ public class ShopController {
 
         shopDao.update(shop);
 
+        return Response.ok();
+    }
+
+    @RequestMapping(value = "/contacts", method = POST, produces = "application/json")
+    public Response saveUserContacts(final HttpServletRequest request, final HttpSession session) {
+        final User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Response.error("Need to login");
+        }
+
+        if(user.getAddress() == null) {
+            user.setAddress(new Address());
+        }
+
+        final Map<String, String[]> params = request.getParameterMap();
+        if(params.containsKey(NAME_PARAM)) {
+            user.setName(params.get(NAME_PARAM)[0]);
+        }
+
+        if(params.containsKey(PHONE_PARAM)) {
+            user.setPhone(params.get(PHONE_PARAM)[0]);
+        }
+
+        if(params.containsKey(COUNTRY_PARAM)) {
+            user.getAddress().setCountry(params.get(COUNTRY_PARAM)[0]);
+        }
+
+        if(params.containsKey(STATE_PARAM)) {
+            user.getAddress().setStateOrProvince(params.get(STATE_PARAM)[0]);
+        }
+
+        if(params.containsKey(CITY_PARAM)) {
+            user.getAddress().setCity(params.get(CITY_PARAM)[0]);
+        }
+
+        if(params.containsKey(ADDRESS_PARAM)) {
+            user.getAddress().setAddress(params.get(ADDRESS_PARAM)[0]);
+        }
+
+        if(params.containsKey(ZIP_PARAM)) {
+            user.getAddress().setZip(params.get(ZIP_PARAM)[0]);
+        }
+
+        userDao.update(user);
+
+        if(params.containsKey(EMAIL_PARAM)) {
+            String email = params.get(EMAIL_PARAM)[0];
+            if(!EmailValidator.getInstance().isValid(email)) {
+                return Response.error("Passed email is invalid: " + email);
+            }
+
+            user.setEmail(email);
+        }
+
+        userDao.update(user);
         return Response.ok();
     }
 

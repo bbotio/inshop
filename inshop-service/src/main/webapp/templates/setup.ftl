@@ -103,48 +103,49 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="tab4">
-                                <form class="form-horizontal mt-sm" action='' method="POST">
+                                <form class="form-horizontal mt-sm" action='/shop/contacts' method="POST">
                                     <fieldset>
                                         <div class="form-group">
-                                            <!-- Address -->
-                                            <label class="control-label col-md-3" for="address">Address</label>
+                                            <!-- Name -->
+                                            <label class="control-label col-md-3" for="name">Name</label>
 
                                             <div class="col-md-8">
                                                 <div class="col-md-10">
-                                                    <input type="text" id="address" name="address" placeholder=""
-                                                           class="form-control">
-                                                    <span class="help-block">Your address</span>
+                                                    <input type="text" id="name" name="name" placeholder=""
+                                                           class="form-control" value="${user.name!""}">
+                                                    <span class="help-block">The name which will be shown to buyer on PayPal checkout page</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                            <div class="tab-pane" id="tab5">
-                                <div class="form-group">
-                                    <!-- Shop name-->
-                                    <label class="control-label col-md-3"></label>
-
-                                    <div class="col-md-8">
-                                        <div class="col-md-13">
-                                            <form action="/setup/payment" method="GET">
-                                                <button type="submit" class="btn btn-success col-md-8">Grant permissions</button>
-                                            </form>
-                                            <span class="help-block pull-left">Grant permissions for PayPal Express Checkout.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="tab6">
-                                <form class="form-horizontal mt-sm" action='' method="POST">
-                                    <fieldset>
                                         <div class="form-group">
-                                            <label for="country-select" class="control-label col-md-3">Destination
-                                                Country</label>
+                                            <!-- Email -->
+                                            <label class="control-label col-md-3" for="email">Email</label>
 
                                             <div class="col-md-8">
-                                                <div class="col-md-10"><select id="country-select"
-                                                                               data-placeholder="Choose a Country..."
+                                                <div class="col-md-10">
+                                                    <input type="email" id="email" name="email" placeholder=""
+                                                           class="form-control" value="${user.email!""}">
+                                                    <span class="help-block">Your PayPal account email</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="phone">Phone</label>
+                                            <div class="col-md-8">
+                                                <div class="col-md-10">
+                                                    <input type="tel" id="phone" name="phone" placeholder="" class="form-control"
+                                                            value="${user.phone!""}">
+                                                    <span class="help-block">Please provide your phone</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <#--Select Country-->
+
+                                            <label for="country-select" class="control-label col-md-3">Country</label>
+                                            <div class="col-md-8">
+                                                <div class="col-md-10">
+                                                    <select id="country" name="country" data-placeholder="${user.address.country!"Choose a Country..."}"
                                                                                class="select-block-level chzn-select">
                                                     <option value=""></option>
                                                     <option value="United States">United States</option>
@@ -360,12 +361,8 @@
                                                     <option value="Saint Helena">Saint Helena</option>
                                                     <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
                                                     <option value="Saint Lucia">Saint Lucia</option>
-                                                    <option value="Saint Pierre and Miquelon">Saint Pierre and
-                                                        Miquelon
-                                                    </option>
-                                                    <option value="Saint Vincent and The Grenadines">Saint Vincent and
-                                                        The Grenadines
-                                                    </option>
+                                                    <option value="Saint Pierre and Miquelon">Saint Pierre andMiquelon</option>
+                                                    <option value="Saint Vincent and The Grenadines">Saint Vincent andThe Grenadines</option>
                                                     <option value="Samoa">Samoa</option>
                                                     <option value="San Marino">San Marino</option>
                                                     <option value="Sao Tome and Principe">Sao Tome and Principe</option>
@@ -380,27 +377,20 @@
                                                     <option value="Solomon Islands">Solomon Islands</option>
                                                     <option value="Somalia">Somalia</option>
                                                     <option value="South Africa">South Africa</option>
-                                                    <option value="South Georgia and The South Sandwich Islands">South
-                                                        Georgia and The South Sandwich Islands
-                                                    </option>
+                                                    <option value="South Georgia and The South Sandwich Islands">SouthGeorgia and The South Sandwich Islands</option>
                                                     <option value="South Sudan">South Sudan</option>
                                                     <option value="Spain">Spain</option>
                                                     <option value="Sri Lanka">Sri Lanka</option>
                                                     <option value="Sudan">Sudan</option>
                                                     <option value="Suriname">Suriname</option>
-                                                    <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen
-                                                    </option>
+                                                    <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
                                                     <option value="Swaziland">Swaziland</option>
                                                     <option value="Sweden">Sweden</option>
                                                     <option value="Switzerland">Switzerland</option>
                                                     <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-                                                    <option value="Taiwan, Republic of China">Taiwan, Republic of
-                                                        China
-                                                    </option>
+                                                    <option value="Taiwan, Republic of China">Taiwan, Republic ofChina</option>
                                                     <option value="Tajikistan">Tajikistan</option>
-                                                    <option value="Tanzania, United Republic of">Tanzania, United
-                                                        Republic of
-                                                    </option>
+                                                    <option value="Tanzania, United Republic of">Tanzania, UnitedRepublic of</option>
                                                     <option value="Thailand">Thailand</option>
                                                     <option value="Timor-leste">Timor-leste</option>
                                                     <option value="Togo">Togo</option>
@@ -410,24 +400,20 @@
                                                     <option value="Tunisia">Tunisia</option>
                                                     <option value="Turkey">Turkey</option>
                                                     <option value="Turkmenistan">Turkmenistan</option>
-                                                    <option value="Turks and Caicos Islands">Turks and Caicos Islands
-                                                    </option>
+                                                    <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
                                                     <option value="Tuvalu">Tuvalu</option>
                                                     <option value="Uganda">Uganda</option>
                                                     <option value="Ukraine">Ukraine</option>
                                                     <option value="United Arab Emirates">United Arab Emirates</option>
                                                     <option value="United Kingdom">United Kingdom</option>
                                                     <option value="United States">United States</option>
-                                                    <option value="United States Minor Outlying Islands">United States
-                                                        Minor Outlying Islands
-                                                    </option>
+                                                    <option value="United States Minor Outlying Islands">United StatesMinor Outlying Islands</option>
                                                     <option value="Uruguay">Uruguay</option>
                                                     <option value="Uzbekistan">Uzbekistan</option>
                                                     <option value="Vanuatu">Vanuatu</option>
                                                     <option value="Venezuela">Venezuela</option>
                                                     <option value="Viet Nam">Viet Nam</option>
-                                                    <option value="Virgin Islands, British">Virgin Islands, British
-                                                    </option>
+                                                    <option value="Virgin Islands, British">Virgin Islands, British</option>
                                                     <option value="Virgin Islands, U.S.">Virgin Islands, U.S.</option>
                                                     <option value="Wallis and Futuna">Wallis and Futuna</option>
                                                     <option value="Western Sahara">Western Sahara</option>
@@ -435,39 +421,71 @@
                                                     <option value="Zambia">Zambia</option>
                                                     <option value="Zimbabwe">Zimbabwe</option>
                                                 </select>
-                                                    <span class="help-block pull-left">Please choose your country destination</span>
+                                                    <span class="help-block pull-left">Please choose your country</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="courier" class="control-label col-md-3">Choose shipping
-                                                option</label>
-
+                                            <label class="control-label col-md-3" for="state">State or province</label>
                                             <div class="col-md-8">
-                                                <div class="col-md-10"><select id="courier"
-                                                                               data-placeholder="Choose an option.."
-                                                                               class="select-block-level chzn-select">
-                                                    <option value=""></option>
-                                                    <option value="Australia Post">Australia Post</option>
-                                                    <option value="DHL US">DHL US</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                                    <span class="help-block pull-left">Please choose your shipping option</span>
+                                                <div class="col-md-10">
+                                                    <input type="text" id="state" name="state" placeholder="" class="form-control"
+                                                           value="${user.address.stateOrProvince!""}">
+                                                    <span class="help-block">Please provide your state or province</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3" for="destination">Destination Zip
-                                                Code</label>
-
+                                            <label class="control-label col-md-3" for="city">City</label>
                                             <div class="col-md-8">
-                                                <div class="col-md-10"><input type="text" id="destination"
-                                                                              name="destination" placeholder=""
-                                                                              class="form-control">
-                                                    <span class="help-block">Please provide your Destination Zip Code</span>
+                                                <div class="col-md-10">
+                                                    <input type="text" id="city" name="city" placeholder="" class="form-control"
+                                                           value="${user.address.city!""}">
+                                                    <span class="help-block">Please provide your city</span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="address">Address</label>
+                                            <div class="col-md-8">
+                                                <div class="col-md-10">
+                                                    <input type="text" id="address" name="address" placeholder="" class="form-control"
+                                                           value="${user.address.address!""}">
+                                                    <span class="help-block">Please provide your address (street, house)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="zip">Zip Code</label>
+                                            <div class="col-md-8">
+                                                <div class="col-md-10">
+                                                    <input type="number" id="zip" name="zip" placeholder="" class="form-control"
+                                                           value="${user.address.zip!""}">
+                                                    <span class="help-block">Please provide your zip code</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab5">
+                                <div class="form-group">
+                                    <!-- Shop name-->
+                                    <label class="control-label col-md-3"></label>
+
+                                    <div class="col-md-8">
+                                        <div class="col-md-13">
+                                            <form action="/setup/payment" method="GET">
+                                                <button type="submit" class="btn btn-success col-md-8">Grant permissions</button>
+                                            </form>
+                                            <span class="help-block pull-left">Grant permissions for PayPal Express Checkout.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab6">
+                                <form class="form-horizontal mt-sm" action='' method="POST">
+                                    <fieldset>
                                         <div class="form-group">
                                             <label class="control-label col-md-3" for="dest-address">Destination
                                                 Address</label>
