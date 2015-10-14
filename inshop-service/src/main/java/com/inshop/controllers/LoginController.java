@@ -45,9 +45,10 @@ public class LoginController {
         final Token accessToken = service.getAccessToken(null, verifier);
         final Instagram instagram = new Instagram(accessToken);
 
+        com.inshop.entity.Token tokenEntity =
+                new com.inshop.entity.Token(accessToken.getToken(), accessToken.getSecret());
 
         final UserInfoData userInfo = instagram.getCurrentUserInfo().getData();
-
         final String userId = userInfo.getId();
         User user = userDao.getByInstagramUserId(userId);
 
@@ -55,7 +56,7 @@ public class LoginController {
         if (user == null) {
             user = new User();
             user.setInstagramUserId(userId);
-            user.setInstagramToken(accessToken);
+            user.setInstagramToken(tokenEntity);
 
             Shop shop = new Shop();
             //TODO: maybe we should use user website instead of making domain
@@ -71,12 +72,11 @@ public class LoginController {
 
             userDao.persist(user);
         } else {
-            user.setInstagramToken(accessToken);
+            user.setInstagramToken(tokenEntity);
             userDao.update(user);
         }
 
         session.setAttribute(Consts.USER_SESSION_ATTRIBUTE, user);
-
         return "redirect:/setup";
     }
 }

@@ -1,21 +1,16 @@
 package com.inshop.controllers;
 
 import com.inshop.PayPalFactory;
-import com.inshop.PermissionsRequest;
 import com.inshop.dao.ShopDao;
 import com.inshop.dao.UserDao;
-import com.inshop.entity.PayPalToken;
+import com.inshop.entity.Token;
 import com.inshop.entity.User;
-import com.paypal.core.credential.SignatureCredential;
-import com.paypal.core.credential.ThirdPartyAuthorization;
-import com.paypal.core.credential.TokenAuthorization;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
 import com.paypal.svcs.types.perm.RequestPermissionsResponse;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Properties;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -83,22 +77,20 @@ public class SetupController {
         if (requestToken != null && verificationCode != null) {
             GetAccessTokenResponse accessToken = payPalFactory.getPermissionsRequest().getAccessToken(requestToken, verificationCode);
 
-            if(accessToken.getToken() != null && accessToken.getTokenSecret() != null) {
+            if (accessToken.getToken() != null && accessToken.getTokenSecret() != null) {
                 final User user = (User) session.getAttribute("user");
                 if (user == null) {
                     return "redirect:/";
                 }
 
-                PayPalToken token = new PayPalToken(accessToken.getToken(), accessToken.getTokenSecret());
+                Token token = new Token(accessToken.getToken(), accessToken.getTokenSecret());
                 user.setPaypalToken(token);
                 userDao.update(user);
 
-                /*TODO: try to avoid using wrapper class (PayPalToken)
-                TokenAuthorization authorization = new TokenAuthorization(accessToken.getToken(), accessToken.getTokenSecret());
+                /*TokenAuthorization authorization = new TokenAuthorization(accessToken.getToken(), accessToken.getSecret());
                 SignatureCredential cred = new SignatureCredential(paypalUsername, paypalPassword, paypalSignature);
                 cred.setApplicationId(paypalAppId);
                 cred.setThirdPartyAuthorization(authorization);*/
-
             }
         }
 

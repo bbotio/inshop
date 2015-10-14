@@ -1,7 +1,5 @@
 package com.inshop.entity;
 
-import org.jinstagram.auth.model.Token;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,15 +22,19 @@ public class User implements Serializable {
     @Column(name = "instagram_user_id")
     private String instagramUserId;
 
+    @Embedded
     @Column(name = "instagram_token")
     private Token instagramToken;
 
     @Embedded
     @Column(name = "paypal_token")
-    private PayPalToken paypalToken;
+    private Token paypalToken;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "name")
+    private String name;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner")
     private Shop shop;
@@ -43,14 +45,6 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Token getInstagramToken() {
-        return instagramToken;
-    }
-
-    public void setInstagramToken(Token instagramToken) {
-        this.instagramToken = instagramToken;
     }
 
     public String getEmail() {
@@ -77,11 +71,19 @@ public class User implements Serializable {
         this.instagramUserId = instagramUserId;
     }
 
-    public PayPalToken getPaypalToken() {
+    public Token getInstagramToken() {
+        return instagramToken;
+    }
+
+    public void setInstagramToken(Token instagramToken) {
+        this.instagramToken = instagramToken;
+    }
+
+    public Token getPaypalToken() {
         return paypalToken;
     }
 
-    public void setPaypalToken(PayPalToken paypalToken) {
+    public void setPaypalToken(Token paypalToken) {
         this.paypalToken = paypalToken;
     }
 
@@ -90,7 +92,17 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", instagramUserId='" + instagramUserId + '\'' +
                 ", shop=" + shop +
                 '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

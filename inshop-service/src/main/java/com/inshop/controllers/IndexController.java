@@ -3,6 +3,7 @@ package com.inshop.controllers;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.oauth.InstagramService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,6 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  *
  */
 @Controller
+@Scope("session")
 public class IndexController {
     @Autowired
     private InstagramService service;

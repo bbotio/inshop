@@ -32,7 +32,8 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
     @Override
     public List<MediaFeedData> getItems() {
         try {
-            Token instagramToken = user.getInstagramToken();
+            com.inshop.entity.Token tokenEntity = user.getInstagramToken();
+            Token instagramToken = new Token(tokenEntity.getToken(), tokenEntity.getSecret());
             Instagram instagram = new Instagram(instagramToken);
             return instagram.getUserFeeds().getData();
         } catch (InstagramException e) {

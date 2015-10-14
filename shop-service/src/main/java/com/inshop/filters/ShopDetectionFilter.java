@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by akornev on 14/10/15.
  */
 @WebFilter
-public class ShopDetectionFilter implements Filter{
+public class ShopDetectionFilter implements Filter {
 
     @Autowired
     private ShopDao shopDao;
