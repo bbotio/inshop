@@ -3,6 +3,7 @@ package com.inshop.controllers;
 import com.inshop.dao.UserDao;
 import com.inshop.entity.Shop;
 import com.inshop.entity.User;
+import com.inshop.utils.Consts;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.auth.model.Verifier;
@@ -74,7 +75,7 @@ public class LoginController {
             userDao.update(user);
         }
 
-        session.setAttribute("user", user);
+        session.setAttribute(Consts.USER_SESSION_ATTRIBUTE, user);
 
         return "redirect:/setup";
     }

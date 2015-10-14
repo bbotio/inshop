@@ -1,4 +1,4 @@
-package com.inshop.controllers;
+package com.inshop.utils;
 
 import java.util.Arrays;
 import java.util.Collections;

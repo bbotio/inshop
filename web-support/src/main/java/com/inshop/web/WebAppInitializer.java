@@ -2,10 +2,8 @@ package com.inshop.web;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
+import javax.servlet.*;
+import java.util.List;
 
 /**
  * Created by akornev on 06/09/15.
@@ -13,6 +11,12 @@ import javax.servlet.ServletException;
 public class WebAppInitializer extends
         AbstractAnnotationConfigDispatcherServletInitializer implements
         ServletContextListener {
+
+    private List<Filter> filters;
+
+    public WebAppInitializer(final List<Filter> filters) {
+        this.filters = filters;
+    }
 
     /**
      * See {@link AbstractAnnotationConfigDispatcherServletInitializer}.
@@ -66,5 +70,10 @@ public class WebAppInitializer extends
      */
     @Override
     protected void registerContextLoaderListener(ServletContext servletContext) {
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        return filters.toArray(new Filter[]{});
     }
 }
