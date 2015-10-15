@@ -17,6 +17,7 @@ import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,8 +37,8 @@ public class WebServerConfig {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @Autowired
-    private List<javax.servlet.Filter> filters;
+    @Autowired(required = false)
+    private List<javax.servlet.Filter> filters = new ArrayList<>();
 
     @Bean
     public WebAppContext jettyWebAppContext() throws IOException {

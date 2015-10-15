@@ -8,12 +8,12 @@ import java.util.Set;
  * Base class for owner's shop.
  * User can choose subdomain in our domain (inshop.com), e.g.: http://sevakshop.inshop.com,
  * or specify his own domain name, e.g.: myshop.com
- *
+ * <p>
  * User can change {@link Shop#title} on main page. Also he can change shop's description.
  * {@link Shop#theme} is UI theme of shop.
  * {@link Shop#shopDelivery} is available delivery type (self-service, EMS and etc.).
  * Every shop can has more than one {@link ShopDelivery}.
- *
+ * <p>
  * Created by savetisyan on 05/09/15.
  */
 
@@ -40,6 +40,9 @@ public class Shop implements Serializable {
     @OneToMany
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private Set<ShopDelivery> shopDelivery;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "shop")
+    private ShopAnalytics shopAnalytics;
 
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
@@ -93,12 +96,20 @@ public class Shop implements Serializable {
         this.shopDelivery = shopDelivery;
     }
 
-    public User getOwner(){
+    public User getOwner() {
         return this.owner;
     }
 
     public void setOwner(final User owner) {
         this.owner = owner;
+    }
+
+    public ShopAnalytics getShopAnalytics() {
+        return shopAnalytics;
+    }
+
+    public void setShopAnalytics(ShopAnalytics shopAnalytics) {
+        this.shopAnalytics = shopAnalytics;
     }
 
     @Override
@@ -120,21 +131,12 @@ public class Shop implements Serializable {
 
         Shop shop = (Shop) o;
 
-        if (domain != null ? !domain.equals(shop.domain) : shop.domain != null) return false;
-        if (title != null ? !title.equals(shop.title) : shop.title != null) return false;
-        if (description != null ? !description.equals(shop.description) : shop.description != null) return false;
-        if (theme != null ? !theme.equals(shop.theme) : shop.theme != null) return false;
-        return !(shopDelivery != null ? !shopDelivery.equals(shop.shopDelivery) : shop.shopDelivery != null);
+        return id == shop.id;
 
     }
 
     @Override
     public int hashCode() {
-        int result = domain != null ? domain.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (theme != null ? theme.hashCode() : 0);
-        result = 31 * result + (shopDelivery != null ? shopDelivery.hashCode() : 0);
-        return result;
+        return id;
     }
 }

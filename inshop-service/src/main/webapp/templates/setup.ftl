@@ -33,12 +33,12 @@
                                 <form class="form-horizontal mt-sm" action='/shop/details' method="POST">
                                     <fieldset>
                                         <div class="form-group">
-                                            <!-- Shop name-->
-                                            <label class="control-label col-md-3" for="shop-name">Shop name</label>
+                                            <!-- Shop title -->
+                                            <label class="control-label col-md-3" for="shop-title">Shop title</label>
 
                                             <div class="col-md-8">
                                                 <div class="col-md-10">
-                                                    <input type="text" id="shop-name" name="shop-name" placeholder=""
+                                                    <input type="text" id="shop-title" name="shop-title" placeholder=""
                                                            class="form-control" value="${shop.title}">
                                                     <span class="help-block">Name of your shop. Will be used in shop title, logo and so on. By default instagram name.</span>
                                                 </div>
@@ -484,16 +484,16 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="tab7">
-                                <form class="form-horizontal mt-sm" action='' method="POST">
+                                <form class="form-horizontal mt-sm" action='/shop/analytics' method="POST">
                                     <fieldset>
                                         <div class="form-group">
                                             <!-- Google Analytics -->
-                                            <label class="control-label col-md-3" for="google-analytics">Google
+                                            <label class="control-label col-md-3" for="google-analytics-id">Google
                                                 Analytics ID</label>
 
                                             <div class="col-md-8">
                                                 <div class="col-md-10">
-                                                    <input type="text" id="google-analytics" name="google-analytics"
+                                                    <input type="text" id="google-analytics-id" name="google-analytics-id"
                                                            placeholder="" class="form-control">
                                                     <span class="help-block">Add your Google Analytics ID in the field below. Create a Google Analytics account</span>
                                                 </div>
