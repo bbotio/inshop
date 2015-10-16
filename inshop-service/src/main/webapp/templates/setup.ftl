@@ -484,17 +484,23 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab6">
-                                <form class="form-horizontal mt-sm" action='' method="POST">
+                                <form class="form-horizontal mt-sm" action='/shop/delivery' method="POST">
                                     <fieldset>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3" for="dest-address">Destination
-                                                Address</label>
-
                                             <div class="col-md-8">
-                                                <div class="col-md-10"><input type="text" id="dest-address"
-                                                                              name="address" placeholder=""
-                                                                              class="form-control">
-                                                    <span class="help-block">Please provide the destination address</span>
+                                                <div class="col-md-10">
+                                                    <div class="checkbox checkbox-success">
+                                                        <input id="checkboxDhl" name="checkboxDhl" type="checkbox">
+                                                        <label for="checkboxDhl">DHL</label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-success">
+                                                        <input id="checkboxEms" name="checkboxEms" type="checkbox">
+                                                        <label for="checkboxEms">EMS</label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-success">
+                                                        <input id="checkboxSelfService" name="checkboxSelfService" type="checkbox">
+                                                        <label for="checkboxSelfService">Self-service</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

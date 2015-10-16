@@ -1,23 +1,24 @@
 package com.inshop.controllers;
 
+import com.inshop.dao.DeliveryTypeDao;
 import com.inshop.dao.ShopDao;
 import com.inshop.dao.UserDao;
-import com.inshop.entity.Address;
-import com.inshop.entity.Shop;
-import com.inshop.entity.ShopAnalytics;
-import com.inshop.entity.User;
+import com.inshop.entity.*;
 import com.inshop.utils.Response;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.omg.CORBA.RepositoryIdHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
+import java.util.*;
 
+import static org.springframework.http.MediaType.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -41,6 +42,16 @@ public class ShopController {
     public static final String ADDRESS_PARAM = "address";
     public static final String ZIP_PARAM = "zip";
 
+    public static final String CHECKBOX_DHL = "checkboxDhl";
+    public static final String CHECKBOX_EMS = "checkboxEms";
+    public static final String CHECKBOX_SELF_SERVICE = "checkboxSelfService";
+
+    public static final Map<String, String> CHECKBOX_TO_DELIVERY_TYPE = new HashMap<>();
+    static {
+        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_DHL, "DHL");
+        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_EMS, "EMS");
+        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_SELF_SERVICE, "Self service");
+    }
 
     @Autowired
     private UserDao userDao;
@@ -48,7 +59,10 @@ public class ShopController {
     @Autowired
     private ShopDao shopDao;
 
-    @RequestMapping(value = "/domain", method = POST, produces = "application/json")
+    @Autowired
+    private DeliveryTypeDao deliveryTypeDao;
+
+    @RequestMapping(value = "/domain", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveShopDomain(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -69,7 +83,7 @@ public class ShopController {
         return Response.error("Need to pass domain");
     }
 
-    @RequestMapping(value = "/details", method = POST, produces = "application/json")
+    @RequestMapping(value = "/details", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveShopDetails(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -94,7 +108,7 @@ public class ShopController {
         return Response.error("Need to pass information about your shop");
     }
 
-    @RequestMapping(value = "/analytics", method = POST, produces = "application/json")
+    @RequestMapping(value = "/analytics", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveAnalytics(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -120,7 +134,7 @@ public class ShopController {
         return Response.ok();
     }
 
-    @RequestMapping(value = "/contacts", method = POST, produces = "application/json")
+    @RequestMapping(value = "/contacts", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveUserContacts(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -175,4 +189,44 @@ public class ShopController {
         return Response.ok();
     }
 
+    @RequestMapping(value = "/delivery", method = POST, produces = APPLICATION_JSON_VALUE)
+    public Response saveDelivery(final HttpServletRequest request, final HttpSession session) {
+        final User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Response.error("Need to login");
+        }
+
+        final Map<String, String[]> params = request.getParameterMap();
+        Set<ShopDelivery> shopDeliveries = new HashSet<>();
+
+        for(String delivery: Arrays.asList(CHECKBOX_DHL, CHECKBOX_EMS, CHECKBOX_SELF_SERVICE)) {
+            if(!params.containsKey(delivery) || !params.get(delivery)[0].equals("on")) {
+                continue;
+            }
+
+            String deliveryName = CHECKBOX_TO_DELIVERY_TYPE.get(delivery);
+            DeliveryType deliveryType = deliveryTypeDao.getByName(deliveryName);
+
+            // TODO: Delivery types already should be in the db, how to import this data on init?
+            if(deliveryType == null) {
+                deliveryType = new DeliveryType();
+                deliveryType.setName(deliveryName);
+                deliveryType.setDescription(deliveryName + " delivery type");
+            }
+
+            ShopDelivery shopDelivery = new ShopDelivery();
+            shopDelivery.setDeliveryType(deliveryType);
+            shopDeliveries.add(shopDelivery);
+        }
+
+        Shop shop = shopDao.getUserShop(user);
+        shop.setShopDelivery(shopDeliveries);
+        shopDao.update(shop);
+
+        if(shopDeliveries.isEmpty()) {
+            return Response.error("You must choose at least one delivery type for your shop.");
+        }
+
+        return Response.ok();
+    }
 }
