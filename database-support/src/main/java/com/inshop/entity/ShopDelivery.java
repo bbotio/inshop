@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 /**
  * This class represents available delivery type for the shop.
  *
@@ -22,7 +25,7 @@ public class ShopDelivery implements Serializable {
     @Column(name = "value")
     private String value;
 
-    @OneToOne
+    @OneToOne(cascade = ALL)
     @JoinColumn(name = "delivery_type_id", referencedColumnName = "id")
     private DeliveryType deliveryTypes;
 

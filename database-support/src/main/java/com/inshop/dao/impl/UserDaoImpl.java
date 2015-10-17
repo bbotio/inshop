@@ -26,4 +26,12 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 .setParameter("instagramUserId", instagramUserId);
         return (User) query.uniqueResult();
     }
+
+    @Override
+    public User getByEmail(String email) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("from User u where u.email=:email")
+                .setParameter("email", email);
+        return (User) query.uniqueResult();
+    }
 }

@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+
 /**
  * Base class for owner's shop.
  * User can choose subdomain in our domain (inshop.com), e.g.: http://sevakshop.inshop.com,
@@ -37,11 +40,11 @@ public class Shop implements Serializable {
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
-    @OneToMany
+    @OneToMany(cascade = ALL)
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private Set<ShopDelivery> shopDelivery;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "shop")
+    @OneToOne(cascade = ALL, mappedBy = "shop")
     private ShopAnalytics shopAnalytics;
 
     @OneToOne

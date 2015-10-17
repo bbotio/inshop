@@ -23,10 +23,18 @@ public class User implements Serializable {
     private String instagramUserId;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "token", column = @Column(name = "instagram_token")),
+            @AttributeOverride(name = "secret", column = @Column(name = "instagram_secret"))
+    })
     @Column(name = "instagram_token")
     private Token instagramToken;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "token", column = @Column(name = "paypal_token")),
+            @AttributeOverride(name = "secret", column = @Column(name = "paypal_secret"))
+    })
     @Column(name = "paypal_token")
     private Token paypalToken;
 
@@ -36,8 +44,18 @@ public class User implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Embedded
+    @Column(name = "address")
+    private Address address;
+
+    @Column(name = "phone")
+    private String phone;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "owner")
     private Shop shop;
+
+    public User() {
+    }
 
     public int getId() {
         return id;
@@ -95,6 +113,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", instagramUserId='" + instagramUserId + '\'' +
                 ", shop=" + shop +
+                ", address=" + address +
                 '}';
     }
 
@@ -104,5 +123,21 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

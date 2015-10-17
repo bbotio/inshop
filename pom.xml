@@ -48,6 +48,7 @@
         <paypal-core.version>1.6.9</paypal-core.version>
         <permissionssdk.version>2.5.109</permissionssdk.version>
         <merchantsdk.version>2.14.117</merchantsdk.version>
+        <commons-validator.version>1.4.1</commons-validator.version>
 
         <!-- The following are for services deployment and configuration -->
         <service.name>${project.artifactId}</service.name>
@@ -119,6 +120,13 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>commons-validator</groupId>
+                <artifactId>commons-validator</artifactId>
+                <version>${commons-validator.version}</version>
+            </dependency>
+
 
             <!-- Freemarker template engine -->
             <dependency>

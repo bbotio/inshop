@@ -7,4 +7,5 @@ import com.inshop.entity.User;
  */
 public interface UserDao extends GenericDao<User> {
     User getByInstagramUserId(String instagramUserId);
+    User getByEmail(String email);
 }
