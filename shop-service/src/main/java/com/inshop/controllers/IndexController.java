@@ -4,11 +4,8 @@ import com.inshop.entity.Shop;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import javax.servlet.http.HttpSession;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -20,10 +17,27 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class IndexController {
 
     @RequestMapping(value = "/", method = GET)
-    public String index(final ModelMap params,
-                        @ModelAttribute final Shop shop) {
+    public String index(final ModelMap params, @ModelAttribute final Shop shop) {
+        return "fashion-shop/category-grid";
+    }
 
-        params.addAttribute("host", shop.getDomain());
-        return "index";
+    @RequestMapping(value = "/category-list", method = GET)
+    public String categoryList() {
+        return "fashion-shop/category-list";
+    }
+
+    @RequestMapping(value = "/category-grid", method = GET)
+    public String categoryGrid() {
+        return "fashion-shop/category-grid";
+    }
+
+    @RequestMapping(value = "/cart", method = GET)
+    public String cart() {
+        return "fashion-shop/cart";
+    }
+
+    @RequestMapping(value = "/about", method = GET)
+    public String about() {
+        return "fashion-shop/about";
     }
 }
