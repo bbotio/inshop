@@ -2,63 +2,25 @@
     <@layout.put block="header">
     <div class="header-top">
         <div class="container">
-            <!-- Currency & Languages Starts -->
-            <div class="col-sm-4 col-xs-12">
-                <div class="pull-left">
-                    <!-- Currency Starts -->
-                    <div class="btn-group">
-                        <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                            $
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <ul class="pull-left dropdown-menu">
-                            <li><a tabindex="-1" href="#">Pound </a></li>
-                            <li><a tabindex="-1" href="#">US Dollar</a></li>
-                            <li><a tabindex="-1" href="#">Euro</a></li>
-                        </ul>
-                    </div>
-                    <!-- Currency Ends -->
-                    <!-- Languages Starts -->
-                    <div class="btn-group">
-                        <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                            ENG
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <ul class="pull-left dropdown-menu">
-                            <li>
-                                <a tabindex="-1" href="#">English</a>
-                            </li>
-                            <li>
-                                <a tabindex="-1" href="#">French</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- Languages Ends -->
-                </div>
-            </div>
-            <!-- Currency & Languages Ends -->
-            <!-- Header Links Starts -->
-            <div class="col-sm-8 col-xs-12">
-                <div class="header-links">
-                    <ul class="nav navbar-nav pull-right">
-                        <li>
-                            <a href="/">
-                                <i class="fa fa-home" title="" data-original-title="Home"></i>
+            <div class="header-links">
+                <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-home" title="" data-original-title="Home"></i>
                                         <span class="hidden-sm hidden-xs">
                                             Home
                                         </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/cart">
-                                <i class="fa fa-shopping-cart" title="" data-original-title="Shopping Cart"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/cart">
+                            <i class="fa fa-shopping-cart" title="" data-original-title="Shopping Cart"></i>
                                         <span class="hidden-sm hidden-xs">
                                             Shopping Cart
                                         </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -80,7 +42,8 @@
                 </div>
                 <div class="col-md-6">
                     <div id="logo">
-                        <a href="../index.ftl"><img src="/images/fashion-shop/logo.png" title="Fashion Shoppe" alt="Fashion Shoppe" class="img-responsive"></a>
+                        <a href="/index"><img src="/images/fashion-shop/logo.png" title="Fashion Shoppe"
+                                                    alt="Fashion Shoppe" class="img-responsive"></a>
                     </div>
                 </div>
                 <div class="col-md-3">
