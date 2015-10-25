@@ -40,4 +40,14 @@ public class IndexController {
     public String about() {
         return "fashion-shop/about";
     }
+
+    @RequestMapping(value = "/product", method = GET)
+    public String product() {
+        return "fashion-shop/product";
+    }
+
+    @RequestMapping(value = "/product-full", method = GET)
+    public String productFull() {
+        return "fashion-shop/product-full";
+    }
 }
