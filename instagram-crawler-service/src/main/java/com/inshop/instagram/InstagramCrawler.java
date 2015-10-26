@@ -8,11 +8,13 @@ import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.MalformedURLException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ import static com.inshop.ProductFactory.buildProducts;
  * Created by savetisyan on 14/09/15.
  */
 public class InstagramCrawler implements Crawler<MediaFeedData> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InstagramCrawler.class);
     private User user;
 
     public InstagramCrawler(User user) {
@@ -47,14 +50,14 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
         return getItems().stream()
                 .filter(filter::filter)
                 .map(image -> {
-                    try {
-                        String domain = user.getShop().getDomain();
-                        InstagramFilter instagramFilter = new InstagramFilter(domain);
-                        Matcher matcher = instagramFilter.getCompiledPattern().matcher(image.getCaption().getText());
-                        return buildProducts(image, new URL(matcher.group()));
-                    } catch (MalformedURLException | URISyntaxException e) {
+                    String domain = user.getShop().getDomain();
+                    InstagramFilter instagramFilter = new InstagramFilter(domain);
+                    Matcher matcher = instagramFilter.getCompiledPattern().matcher(image.getCaption().getText());
+                    String url = matcher.group();
+                    if (url.isEmpty()) {
+                        return Collections.<Product>emptyList();
                     }
-                    return new ArrayList<Product>();
+                    return buildProducts(image, url);
                 })
                 .collect(Collectors.toList());
     }
