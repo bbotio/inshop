@@ -7,9 +7,8 @@ import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,12 +16,13 @@ import java.util.List;
 
 import static com.inshop.entity.Price.Currency.RUB;
 import static com.inshop.entity.Price.Currency.USD;
+import static java.net.URLEncoder.encode;
 
 /**
- * Created by savetisyan on 26/09/15.
+ * Created by savetisyan
  */
 public class ProductBuilderTest {
-    private URL url;
+    private String url;
     private Caption caption;
     private MediaFeedData mediaFeedData;
 
@@ -36,10 +36,10 @@ public class ProductBuilderTest {
     }
 
     @Test
-    public void testValid() throws MalformedURLException, URISyntaxException {
-        url = new URL("http://sevak.inshop.com?category=shoes,fashion&size=xxl&count=2&" +
-                "color=red&price=2&currency=rub");
-        caption.setText("You must buy this shoes" + url.toString() + ". Visit our site www.example.com");
+    public void testValid() throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
+        url = "http://sevak.inshop.com?category=shoes,fashion&size=xxl&count=2&" +
+                "color=red&price=2&currency=rub";
+        caption.setText("You must buy this shoes" + url + ". Visit our site www.example.com");
         mediaFeedData.setTags(Arrays.asList("123", "tah1", "as8"));
 
         List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
@@ -70,8 +70,8 @@ public class ProductBuilderTest {
 
     @Test
     public void testValid2() throws Exception {
-        url = new URL("http://sevak.inshop.com");
-        caption.setText("You must buy this shoes! " + url.toString());
+        url = "http://sevak.inshop.com";
+        caption.setText("You must buy this shoes! " + url);
         mediaFeedData.setTags(new ArrayList<>());
 
         List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
@@ -91,6 +91,32 @@ public class ProductBuilderTest {
         Assert.assertEquals("You must buy this shoes!", product.getDescription());
 
         Assert.assertTrue("There should be no additional fields", product.getAdditionalFields().isEmpty());
+        Assert.assertTrue("There should be no tags", product.getTags().isEmpty());
+    }
+
+    @Test
+    public void testValid3() throws Exception {
+        url = "http://sevak.inshop.com?category=book,книга&price=1500&currency=rub&count=1&name=Алиса в стране чудес&" +
+                "seller=Студия Артемия Лебедева";
+
+        caption.setText("You must buy this book! " + url);
+        mediaFeedData.setTags(new ArrayList<>());
+
+        List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
+        System.out.println();
+
+        Assert.assertEquals(1, productList.size());
+        Product product = productList.get(0);
+
+        Assert.assertEquals(2, product.getCategories().size());
+        product.getCategories()
+                .forEach(x ->
+                        Assert.assertTrue("Category should be 'книга' or 'book', but found " + x.getName(),
+                                x.getName().equals("книга") || x.getName().equals("book")));
+
+        Assert.assertEquals("Price must be equals to 1500 Rub", new Price(1500, RUB), product.getPrice());
+        Assert.assertEquals("link to image", product.getImageUrl());
+        Assert.assertEquals("You must buy this book!", product.getDescription());
         Assert.assertTrue("There should be no tags", product.getTags().isEmpty());
     }
 }

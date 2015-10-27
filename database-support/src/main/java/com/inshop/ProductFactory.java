@@ -5,13 +5,12 @@ import com.inshop.entity.Category;
 import com.inshop.entity.Price;
 import com.inshop.entity.Product;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,21 +21,24 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.inshop.entity.Price.Currency.USD;
+import static java.net.URLEncoder.encode;
+import static java.nio.charset.Charset.forName;
+import static org.apache.http.client.utils.URLEncodedUtils.parse;
 
 /**
- * Created by savetisyan on 25/09/15.
+ * Created by savetisyan on 25/09/15
  */
 public class ProductFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductFactory.class);
 
-    public static List<Product> buildProducts(MediaFeedData image, URL url) throws URISyntaxException {
+    public static List<Product> buildProducts(MediaFeedData image, String url) {
         Product product = new Product();
 
         Date ts = new Date(Long.parseLong(image.getCaption().getCreatedTime()));
         Instant instant = ts.toInstant();
         product.setDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 
-        product.setDescription(image.getCaption().getText().replace(url.toString(), "").trim());
+        product.setDescription(image.getCaption().getText().replace(url, "").trim());
         product.setImageUrl(image.getLink());
         product.setTags(new HashSet<>(image.getTags()));
         product.setCategories(new HashSet<>());
@@ -45,7 +47,20 @@ public class ProductFactory {
         Price price = new Price(1, USD);
         product.setPrice(price);
 
-        List<NameValuePair> params = URLEncodedUtils.parse(url.toURI(), "UTF-8");
+        // TODO: avoid multiple replace
+        // maybe, it would be better to get query params manually and not to encode/decode
+        // string and replace escaped substrings to unescaped equivalents
+
+        String query = url.substring(url.indexOf("?") + 1);
+        try {
+            query = encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.warn("Unsupported encoding (UTF-8), ");
+            throw new RuntimeException(e);
+        }
+        query = query.replace("%3D", "=").replace("%26", "&");
+
+        List<NameValuePair> params = parse(query, forName("UTF-8"));
         AtomicInteger count = new AtomicInteger(1);
 
         params.forEach(param -> {
@@ -67,12 +82,14 @@ public class ProductFactory {
                 }
             } else if (param.getName().equals("count")) {
                 count.set(Integer.parseInt(param.getValue()));
+            } else if (param.getName().equals("name")) {
+                product.setName(param.getValue());
             } else {
                 product.getAdditionalFields().add(new AdditionalField(param.getName(), param.getValue()));
             }
         });
 
-        if(product.getCategories().isEmpty()) {
+        if (product.getCategories().isEmpty()) {
             Category category = new Category();
             category.setProduct(product);
             category.setName("other");
