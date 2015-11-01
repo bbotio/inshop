@@ -1,5 +1,7 @@
 package com.inshop.entity;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -40,7 +42,7 @@ public class Shop implements Serializable {
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
-    @OneToMany(cascade = ALL)
+    @OneToMany(cascade = ALL, fetch = EAGER)
     @JoinColumn(name = "shop_delivery_id", referencedColumnName = "id")
     private Set<ShopDelivery> shopDelivery;
 
@@ -50,6 +52,10 @@ public class Shop implements Serializable {
     @OneToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
+
+    @OneToOne(cascade = ALL)
+    @JoinColumn(name = "pickUpAddress", referencedColumnName = "id")
+    private Address pickUpAddress;
 
     public int getId() {
         return id;
@@ -115,6 +121,14 @@ public class Shop implements Serializable {
         this.shopAnalytics = shopAnalytics;
     }
 
+    public Address getPickUpAddress() {
+        return pickUpAddress;
+    }
+
+    public void setPickUpAddress(Address pickUpAddress) {
+        this.pickUpAddress = pickUpAddress;
+    }
+
     @Override
     public String toString() {
         return "Shop{" +
@@ -124,6 +138,8 @@ public class Shop implements Serializable {
                 ", description='" + description + '\'' +
                 ", theme=" + theme +
                 ", shopDelivery=" + shopDelivery +
+                ", shopAnalytics=" + shopAnalytics +
+                ", pickUpAddress=" + pickUpAddress +
                 '}';
     }
 

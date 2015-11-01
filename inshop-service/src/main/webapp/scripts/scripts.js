@@ -45,3 +45,29 @@ function resize_intro(){
 			jQuery(".flexslider .slides > li").css('height','300px');  	
 	}
 }
+
+function changeStateAddress() {
+	var elements = ['country-pickup', 'state-pickup', 'city-pickup', 'address-pickup', 'zip-pickup'];
+
+	elements.forEach(function(item){
+		var state = $('#' + item + '');
+		state.prop('disabled', !state.prop('disabled'))
+	});
+}
+
+function checkCheckBox(id, checked) {
+	$('#' + id +'').prop('checked', checked);
+
+	if(id == 'SelfService') {
+		disableAddress(!checked);
+	}
+}
+
+function disableAddress(isDisabled) {
+	var elements = ['country-pickup', 'state-pickup', 'city-pickup', 'address-pickup', 'zip-pickup'];
+
+	elements.forEach(function(item){
+		var state = $('#' + item + '');
+		state.prop('disabled', isDisabled)
+	});
+}

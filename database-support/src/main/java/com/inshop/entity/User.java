@@ -1,7 +1,11 @@
 package com.inshop.entity;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * Base user entity.
@@ -44,8 +48,8 @@ public class User implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Embedded
-    @Column(name = "address")
+    @OneToOne(cascade = ALL)
+    @JoinColumn(name = "address", referencedColumnName = "id")
     private Address address;
 
     @Column(name = "phone")

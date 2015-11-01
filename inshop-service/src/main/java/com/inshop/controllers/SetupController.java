@@ -3,8 +3,7 @@ package com.inshop.controllers;
 import com.inshop.PayPalFactory;
 import com.inshop.dao.ShopDao;
 import com.inshop.dao.UserDao;
-import com.inshop.entity.Token;
-import com.inshop.entity.User;
+import com.inshop.entity.*;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
 import com.paypal.svcs.types.perm.RequestPermissionsResponse;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
@@ -18,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -50,8 +54,23 @@ public class SetupController {
             return "redirect:/";
         }
 
+        Shop userShop = shopDao.getUserShop(user);
+        if(userShop.getPickUpAddress() == null) {
+            userShop.setPickUpAddress(new Address());
+        }
+        shopDao.update(userShop);
+
+        List<String> checkedCheckBoxes = new ArrayList<>();
+        Set<ShopDelivery> shopDelivery = userShop.getShopDelivery();
+        if(shopDelivery != null && !shopDelivery.isEmpty()) {
+            checkedCheckBoxes.addAll(shopDelivery.stream()
+                    .map(delivery -> delivery.getDeliveryType().getName())
+                    .collect(Collectors.toList()));
+        }
+
         params.addAttribute("user", user);
-        params.addAttribute("shop", shopDao.getUserShop(user));
+        params.addAttribute("shop", userShop);
+        params.addAttribute("checkedCheckBoxes", checkedCheckBoxes);
         return "setup";
     }
 
