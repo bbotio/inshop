@@ -10,5 +10,5 @@ public interface ShopDao extends GenericDao<Shop> {
 
     Shop getUserShop(User user);
 
-    Shop getShopByDomain(final String domain);
+    Shop getShopByDomain(String domain);
 }

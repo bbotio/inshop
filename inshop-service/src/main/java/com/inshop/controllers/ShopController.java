@@ -36,22 +36,22 @@ public class ShopController {
     public static final String EMAIL_PARAM = "email";
     public static final String NAME_PARAM = "name";
     public static final String PHONE_PARAM = "phone";
+
     public static final String COUNTRY_PARAM = "country";
     public static final String STATE_PARAM = "state";
     public static final String CITY_PARAM = "city";
     public static final String ADDRESS_PARAM = "address";
     public static final String ZIP_PARAM = "zip";
 
-    public static final String CHECKBOX_DHL = "checkboxDhl";
-    public static final String CHECKBOX_EMS = "checkboxEms";
-    public static final String CHECKBOX_SELF_SERVICE = "checkboxSelfService";
+    public static final String PICKUP_COUNTRY_PARAM = "country-pickup";
+    public static final String PICKUP_STATE_PARAM = "state-pickup";
+    public static final String PICKUP_CITY_PARAM = "city-pickup";
+    public static final String PICKUP_ADDRESS_PARAM = "address-pickup";
+    public static final String PICKUP_ZIP_PARAM = "zip-pickup";
 
-    public static final Map<String, String> CHECKBOX_TO_DELIVERY_TYPE = new HashMap<>();
-    static {
-        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_DHL, "DHL");
-        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_EMS, "EMS");
-        CHECKBOX_TO_DELIVERY_TYPE.put(CHECKBOX_SELF_SERVICE, "Self service");
-    }
+    public static final String CHECKBOX_DHL = "DHL";
+    public static final String CHECKBOX_EMS = "EMS";
+    public static final String CHECKBOX_SELF_SERVICE = "SelfService";
 
     @Autowired
     private UserDao userDao;
@@ -137,12 +137,17 @@ public class ShopController {
     @RequestMapping(value = "/contacts", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveUserContacts(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
+
         if (user == null) {
             return Response.error("Need to login");
         }
 
         if(user.getAddress() == null) {
             user.setAddress(new Address());
+        }
+
+        if(user.getShop().getPickUpAddress() == null) {
+            user.getShop().setPickUpAddress(new Address());
         }
 
         final Map<String, String[]> params = request.getParameterMap();
@@ -155,25 +160,43 @@ public class ShopController {
         }
 
         if(params.containsKey(COUNTRY_PARAM)) {
-            user.getAddress().setCountry(params.get(COUNTRY_PARAM)[0]);
+            String country = params.get(COUNTRY_PARAM)[0];
+            if (!country.isEmpty() || user.getAddress().getCountry() == null || user.getAddress().getCountry().isEmpty()) {
+                user.getAddress().setCountry(country);
+            }
+
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getCountry())) {
+                user.getShop().getPickUpAddress().setCountry(country);
+            }
         }
 
         if(params.containsKey(STATE_PARAM)) {
             user.getAddress().setStateOrProvince(params.get(STATE_PARAM)[0]);
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getStateOrProvince())) {
+                user.getShop().getPickUpAddress().setStateOrProvince(params.get(STATE_PARAM)[0]);
+            }
         }
 
         if(params.containsKey(CITY_PARAM)) {
             user.getAddress().setCity(params.get(CITY_PARAM)[0]);
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getCity())) {
+                user.getShop().getPickUpAddress().setCity(params.get(CITY_PARAM)[0]);
+            }
         }
 
         if(params.containsKey(ADDRESS_PARAM)) {
             user.getAddress().setAddress(params.get(ADDRESS_PARAM)[0]);
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getAddress())) {
+                user.getShop().getPickUpAddress().setAddress(params.get(ADDRESS_PARAM)[0]);
+            }
         }
 
         if(params.containsKey(ZIP_PARAM)) {
             user.getAddress().setZip(params.get(ZIP_PARAM)[0]);
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getZip())) {
+                user.getShop().getPickUpAddress().setZip(params.get(ZIP_PARAM)[0]);
+            }
         }
-
         userDao.update(user);
 
         if(params.containsKey(EMAIL_PARAM)) {
@@ -199,19 +222,48 @@ public class ShopController {
         final Map<String, String[]> params = request.getParameterMap();
         Set<ShopDelivery> shopDeliveries = new HashSet<>();
 
+        Address pickUpAddress = user.getShop().getPickUpAddress();
+        boolean isSelfServiceEnabled = false;
+
         for(String delivery: Arrays.asList(CHECKBOX_DHL, CHECKBOX_EMS, CHECKBOX_SELF_SERVICE)) {
             if(!params.containsKey(delivery) || !params.get(delivery)[0].equals("on")) {
                 continue;
             }
 
-            String deliveryName = CHECKBOX_TO_DELIVERY_TYPE.get(delivery);
-            DeliveryType deliveryType = deliveryTypeDao.getByName(deliveryName);
+            DeliveryType deliveryType = deliveryTypeDao.getByName(delivery);
 
-            // TODO: Delivery types already should be in the db, how to import this data on init?
             if(deliveryType == null) {
                 deliveryType = new DeliveryType();
-                deliveryType.setName(deliveryName);
-                deliveryType.setDescription(deliveryName + " delivery type");
+                deliveryType.setName(delivery);
+                deliveryType.setDescription(delivery + " delivery type");
+            }
+
+            if(delivery.equals("SelfService")) {
+                isSelfServiceEnabled = true;
+
+                if(params.containsKey(PICKUP_COUNTRY_PARAM)) {
+                    String country = params.get(PICKUP_COUNTRY_PARAM)[0];
+
+                    if (!country.isEmpty() || pickUpAddress.getCountry() == null || pickUpAddress.getCountry().isEmpty()) {
+                        pickUpAddress.setCountry(country);
+                    }
+                }
+
+                if(params.containsKey(PICKUP_STATE_PARAM)) {
+                    pickUpAddress.setStateOrProvince(params.get(PICKUP_STATE_PARAM)[0]);
+                }
+
+                if(params.containsKey(PICKUP_CITY_PARAM)) {
+                    pickUpAddress.setCity(params.get(PICKUP_CITY_PARAM)[0]);
+                }
+
+                if(params.containsKey(PICKUP_ADDRESS_PARAM)) {
+                    pickUpAddress.setAddress(params.get(PICKUP_ADDRESS_PARAM)[0]);
+                }
+
+                if(params.containsKey(PICKUP_ZIP_PARAM)) {
+                    pickUpAddress.setZip(params.get(PICKUP_ZIP_PARAM)[0]);
+                }
             }
 
             ShopDelivery shopDelivery = new ShopDelivery();
@@ -219,9 +271,13 @@ public class ShopController {
             shopDeliveries.add(shopDelivery);
         }
 
-        Shop shop = shopDao.getUserShop(user);
-        shop.setShopDelivery(shopDeliveries);
-        shopDao.update(shop);
+        if(!isSelfServiceEnabled) {
+            shopDeliveries.removeIf(x -> x.getDeliveryType().getName().equals("SelfService"));
+        }
+
+        user.getShop().setShopDelivery(shopDeliveries);
+        user.getShop().setPickUpAddress(pickUpAddress);
+        userDao.update(user);
 
         if(shopDeliveries.isEmpty()) {
             return Response.error("You must choose at least one delivery type for your shop.");

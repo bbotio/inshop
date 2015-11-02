@@ -22,7 +22,6 @@ public class ShopAnalytics {
     @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
-
     public int getId() {
         return id;
     }

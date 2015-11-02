@@ -68,11 +68,11 @@ public class LoginController {
             }
             shop.setTitle(userInfo.getFullName());
             shop.setDescription(userInfo.getBio());
-
+            shop.setPickUpAddress(new Address());
             shop.setOwner(user);
             user.setShop(shop);
 
-            userDao.persist(user);
+            userDao.save(user);
         } else {
             user.setInstagramToken(tokenEntity);
             userDao.update(user);
