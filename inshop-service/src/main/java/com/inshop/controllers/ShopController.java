@@ -285,4 +285,16 @@ public class ShopController {
 
         return Response.ok();
     }
+
+    @RequestMapping(value = "/launch", method = POST)
+    public String launchShop(final HttpServletRequest request, final HttpSession session) {
+        // TODO: validate shop here
+        final User user = (User) session.getAttribute("user");
+        final Shop shop = shopDao.getUserShop(user);
+
+        shop.setState(Shop.State.LAUNCHED);
+
+        shopDao.update(shop);
+        return "redirect:/dashboard";
+    }
 }

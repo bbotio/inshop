@@ -21,7 +21,7 @@ $(function(){
                         setup_errors_div.append(tab_errors)
                         has_errors = true
                     }
-                })
+              })
             }
             return has_errors
         }
@@ -44,19 +44,40 @@ $(function(){
                     $wizard.find('.pager .finish').hide();
                 }
             },
-            onTabChange: function(tab, navigation, index) {
-                if (tab.length > 0) {
-                    var tab_name = tab.find("strong").text()
-                    var tab_id = tab.children().attr("href")
 
-                    tab_form = $(tab_id).children("form")
-                    endpoint = tab_form.attr("action")
-                    req = $.post(endpoint, tab_form.serialize())
+            findTabName: function(tab) {
+                return tab.find("strong").text()
+            },
+
+            findTabId: function(tab) {
+                return tab.children().attr("href")
+            },
+
+            findForm: function(tab) {
+                return $(this.findTabId(tab)).children("form")
+            },
+
+            makeQuery: function(tab) {
+                tab_form = this.findForm(tab)
+                endpoint = tab_form.attr("action")
+                return $.post(endpoint, tab_form.serialize())
+            },
+
+            onTabChange: function(tab, navigation, index) {
+                var $total = navigation.find('li').length;
+                var $current = index+1;
+                if (tab.length > 0 && $total != $current) {
+                    req = this.makeQuery(tab)
+                    var tab_name = this.findTabName(tab)
+                    var tab_id = this.findTabId(tab)
                     req.done(function(resp){
                         if (typeof window.setup_errors == "undefined") {
                             window.setup_errors = {}
                         }
-                        window.setup_errors[tab_name] = {"tab_id": tab_id, "errors": resp.response.errors}
+    
+                        if (resp.response.errors.length > 0) {
+                            window.setup_errors[tab_name] = {"tab_id": tab_id, "errors": resp.response.errors}
+                        }
                         if (resp.status == 'ERROR') {
                             // show errors notifications
                         }
@@ -64,6 +85,13 @@ $(function(){
                     })
                 }
             },
+            onLast: function(tab, navigation, index) {
+                if (Object.keys(window.setup_errors).length == 0 
+                        || typeof window.setup_errors == "undefined") {
+                    tab_form = this.findForm(tab)
+                    tab_form.submit()
+                }
+            }, 
         });
 
         $('.widget').widgster();

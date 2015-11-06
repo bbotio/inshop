@@ -893,9 +893,11 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="tab8">
-                                <div id="setup_tab_errors">
-                                </div>
-                                <p></p>
+                                <form class="form-horizontal mt-sm" action='/shop/launch' method="POST">
+                                    <div id="setup_tab_errors">
+                                    </div>
+                                    <p></p>
+                                </form>
                             </div>
                             <div class="description ml mr mt-n-md">
                                 <ul class="pager wizard">
@@ -908,7 +910,7 @@
                                         <button class="btn btn-primary pull-right">Next <i
                                                 class="fa fa-caret-right"></i></button>
                                     </li>
-                                    <li class="finish" style="display: none">
+                                    <li class="finish last" style="display: none">
                                         <button class="btn btn-success pull-right">Launch<i class="fa fa-check"></i>
                                         </button>
                                     </li>
