@@ -2,6 +2,7 @@ package com.inshop.controllers;
 
 import com.inshop.dao.DeliveryTypeDao;
 import com.inshop.dao.ShopDao;
+import com.inshop.dao.ThemeDao;
 import com.inshop.dao.UserDao;
 import com.inshop.entity.*;
 import com.inshop.utils.Response;
@@ -52,12 +53,16 @@ public class ShopController {
     public static final String CHECKBOX_DHL = "DHL";
     public static final String CHECKBOX_EMS = "EMS";
     public static final String CHECKBOX_SELF_SERVICE = "SelfService";
+    public static final String SHOP_THEME = "shop-theme";
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
     private ShopDao shopDao;
+
+    @Autowired
+    private ThemeDao themeDao;
 
     @Autowired
     private DeliveryTypeDao deliveryTypeDao;
@@ -284,5 +289,41 @@ public class ShopController {
         }
 
         return Response.ok();
+    }
+
+    @RequestMapping(value = "/launch", method = POST)
+    public String launchShop(final HttpServletRequest request, final HttpSession session) {
+        // TODO: validate shop here
+        final User user = (User) session.getAttribute("user");
+        final Shop shop = shopDao.getUserShop(user);
+
+        shop.setState(Shop.State.LAUNCHED);
+
+        shopDao.update(shop);
+        return "redirect:/dashboard";
+    }
+
+    @RequestMapping(value = "/theme", method = POST, produces = APPLICATION_JSON_VALUE)
+    public Response saveShopTheme(final HttpServletRequest request, final HttpSession session) {
+        final User user = (User) session.getAttribute("user");
+        final Shop shop = shopDao.getUserShop(user);
+        final Map<String, String[]> params = request.getParameterMap();
+
+        if (params.containsKey(SHOP_THEME)) {
+            final String themeName = params.get(SHOP_THEME)[0];
+            if (!StringUtils.isEmpty(themeName)) {
+                final Theme theme = themeDao.getThemeByName(themeName);
+
+                shop.setTheme(theme);
+
+                shopDao.update(shop);
+
+                return Response.ok();
+            }
+        }
+
+
+
+        return Response.error("Shop view was not specified");
     }
 }

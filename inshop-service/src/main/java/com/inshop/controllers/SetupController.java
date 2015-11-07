@@ -2,6 +2,7 @@ package com.inshop.controllers;
 
 import com.inshop.PayPalFactory;
 import com.inshop.dao.ShopDao;
+import com.inshop.dao.ThemeDao;
 import com.inshop.dao.UserDao;
 import com.inshop.entity.*;
 import com.paypal.svcs.types.perm.GetAccessTokenResponse;
@@ -41,6 +42,9 @@ public class SetupController {
     private UserDao userDao;
 
     @Autowired
+    private ThemeDao themeDao;
+
+    @Autowired
     private PayPalFactory payPalFactory;
 
     @Autowired
@@ -71,6 +75,7 @@ public class SetupController {
         params.addAttribute("user", user);
         params.addAttribute("shop", userShop);
         params.addAttribute("checkedCheckBoxes", checkedCheckBoxes);
+        params.addAttribute("themes", themeDao.findAll(Theme.class));
         return "setup";
     }
 

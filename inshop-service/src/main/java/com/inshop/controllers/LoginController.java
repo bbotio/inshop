@@ -61,6 +61,7 @@ public class LoginController {
             user.setInstagramToken(tokenEntity);
 
             Shop shop = new Shop();
+            shop.setState(Shop.State.STOPED);
             //TODO: maybe we should use user website instead of making domain
             final String domainName = userInfo.getUsername();
             if (!StringUtils.isEmpty(domainName)) {

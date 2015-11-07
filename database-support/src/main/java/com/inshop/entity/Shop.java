@@ -24,6 +24,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 public class Shop implements Serializable {
+
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -38,7 +39,7 @@ public class Shop implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
@@ -53,9 +54,15 @@ public class Shop implements Serializable {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
+
     @OneToOne(cascade = ALL)
     @JoinColumn(name = "pickUpAddress", referencedColumnName = "id")
     private Address pickUpAddress;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="state")
+    private State state;
+
 
     public int getId() {
         return id;
@@ -129,6 +136,14 @@ public class Shop implements Serializable {
         this.pickUpAddress = pickUpAddress;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "Shop{" +
@@ -157,5 +172,9 @@ public class Shop implements Serializable {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public static enum State {
+        LAUNCHED, STOPED
     }
 }
