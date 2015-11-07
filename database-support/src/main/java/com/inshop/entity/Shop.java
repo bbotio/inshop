@@ -39,7 +39,7 @@ public class Shop implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 

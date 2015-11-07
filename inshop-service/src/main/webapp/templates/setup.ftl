@@ -81,7 +81,7 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="tab3">
-                                <form class="form-horizontal mt-sm" action='' method="POST">
+                                <form class="form-horizontal mt-sm" action='/shop/theme' method="POST">
                                     <fieldset>
                                         <div class="form-group">
                                             <!-- Template name -->
@@ -90,10 +90,12 @@
 
                                             <div class="col-md-8">
                                                 <div class="col-md-10">
-                                                    <select id="shop-template" data-placeholder="Choose shop template"
+                                                    <select name="shop-theme" id="shop-theme" data-placeholder="Choose shop template"
                                                             class="select-block-level chzn-select">
                                                         <option value=""></option>
-                                                        <option value="First template">First template</option>
+                                                        <#list themes as theme> 
+                                                            <option value="${theme.name}">${theme.name}</option>
+                                                        </#list>
                                                     </select>
                                                     <span class="help-block">Shop template</span>
                                                 </div>

@@ -18,36 +18,36 @@ public class IndexController {
 
     @RequestMapping(value = "/", method = GET)
     public String index(final ModelMap params, @ModelAttribute final Shop shop) {
-        return "fashion-shop/category-grid";
+        return shop.getTheme().getName() + "/category-grid";
     }
 
     @RequestMapping(value = "/category-list", method = GET)
-    public String categoryList() {
-        return "fashion-shop/category-list";
+    public String categoryList(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/category-list";
     }
 
     @RequestMapping(value = "/category-grid", method = GET)
-    public String categoryGrid() {
-        return "fashion-shop/category-grid";
+    public String categoryGrid(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/category-grid";
     }
 
     @RequestMapping(value = "/cart", method = GET)
-    public String cart() {
-        return "fashion-shop/cart";
+    public String cart(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/cart";
     }
 
     @RequestMapping(value = "/about", method = GET)
-    public String about() {
-        return "fashion-shop/about";
+    public String about(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/about";
     }
 
     @RequestMapping(value = "/product", method = GET)
-    public String product() {
-        return "fashion-shop/product";
+    public String product(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/product";
     }
 
     @RequestMapping(value = "/product-full", method = GET)
-    public String productFull() {
-        return "fashion-shop/product-full";
+    public String productFull(@ModelAttribute final Shop shop) {
+        return shop.getTheme().getName() + "/product-full";
     }
 }
