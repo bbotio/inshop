@@ -77,6 +77,8 @@ $(function(){
     
                         if (resp.response.errors.length > 0) {
                             window.setup_errors[tab_name] = {"tab_id": tab_id, "errors": resp.response.errors}
+                        } else {
+                            delete window.setup_errors[tab_name]
                         }
                         if (resp.status == 'ERROR') {
                             // show errors notifications

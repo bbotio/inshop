@@ -311,14 +311,15 @@ public class ShopController {
 
         if (params.containsKey(SHOP_THEME)) {
             final String themeName = params.get(SHOP_THEME)[0];
+            if (!StringUtils.isEmpty(themeName)) {
+                final Theme theme = themeDao.getThemeByName(themeName);
 
-            final Theme theme = themeDao.getThemeByName(themeName);
+                shop.setTheme(theme);
 
-            shop.setTheme(theme);
+                shopDao.update(shop);
 
-            shopDao.update(shop);
-
-            return Response.ok();
+                return Response.ok();
+            }
         }
 
 
