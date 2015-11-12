@@ -25,26 +25,18 @@ public class IndexController {
     @Autowired
     private ProductDao productDao;
 
-    @RequestMapping
-    public String empty(final ModelMap params, @ModelAttribute final Shop shop) {
-        return index(params, shop);
-    }
-
-    @RequestMapping(value = "/index", method = GET)
-    public String index(final ModelMap params, @ModelAttribute final Shop shop) {
-        return categoryGrid(shop, params);
+    @RequestMapping(value = {"*", "/category-grid"}, method = GET)
+    public String categoryGrid(@ModelAttribute final Shop shop, final ModelMap params) {
+        List<Product> uniqueProductsByShop = productDao.getUniqueProductsByShop(shop);
+        params.addAttribute("products", uniqueProductsByShop);
+        return shop.getTheme().getName() + "/category-grid";
     }
 
     @RequestMapping(value = "/category-list", method = GET)
     public String categoryList(@ModelAttribute final Shop shop, final ModelMap params) {
-        params.addAttribute("products", productDao.getProductsByShop(shop));
+        List<Product> uniqueProductsByShop = productDao.getUniqueProductsByShop(shop);
+        params.addAttribute("products", uniqueProductsByShop);
         return shop.getTheme().getName() + "/category-list";
-    }
-
-    @RequestMapping(value = "/category-grid", method = GET)
-    public String categoryGrid(@ModelAttribute final Shop shop, final ModelMap params) {
-        params.addAttribute("products", productDao.getProductsByShop(shop));
-        return shop.getTheme().getName() + "/category-grid";
     }
 
     @RequestMapping(value = "/cart", method = GET)
