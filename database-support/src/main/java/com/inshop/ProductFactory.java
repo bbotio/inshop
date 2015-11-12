@@ -4,17 +4,16 @@ import com.inshop.entity.AdditionalField;
 import com.inshop.entity.Category;
 import com.inshop.entity.Price;
 import com.inshop.entity.Product;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.NameValuePair;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +30,7 @@ import static org.apache.http.client.utils.URLEncodedUtils.parse;
 public class ProductFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductFactory.class);
 
-    public static List<Product> buildProducts(MediaFeedData image, String url) {
+    public static Pair<Product, Integer> buildProducts(MediaFeedData image, String url) {
         Product product = new Product();
 
         Date ts = new Date(Long.parseLong(image.getCaption().getCreatedTime()));
@@ -39,7 +38,7 @@ public class ProductFactory {
         product.setDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 
         product.setDescription(image.getCaption().getText().replace(url, "").trim());
-        product.setImageUrl(image.getLink());
+        product.setImageUrl(image.getImages().getStandardResolution().getImageUrl());
         product.setTags(new HashSet<>(image.getTags()));
         product.setCategories(new HashSet<>());
         product.setAdditionalFields(new HashSet<>());
@@ -96,19 +95,6 @@ public class ProductFactory {
             product.getCategories().add(category);
         }
 
-        return generate(product, count.get());
-    }
-
-    private static List<Product> generate(Product product, int n) {
-        List<Product> generatedList = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            try {
-                generatedList.add(product.clone());
-            } catch (CloneNotSupportedException e) {
-                LOGGER.warn("Can't clone product");
-            }
-        }
-
-        return generatedList;
+        return Pair.of(product, count.get());
     }
 }

@@ -16,12 +16,9 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public User getByInstagramUserId(final String instagramUserId) {
-        Query query = sessionFactory.getCurrentSession()
+        Query query = getCurrentSession()
                 .createQuery("from User u where u.instagramUserId=:instagramUserId")
                 .setParameter("instagramUserId", instagramUserId);
         return (User) query.uniqueResult();
@@ -29,7 +26,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     public User getByEmail(String email) {
-        Query query = sessionFactory.getCurrentSession()
+        Query query = getCurrentSession()
                 .createQuery("from User u where u.email=:email")
                 .setParameter("email", email);
         return (User) query.uniqueResult();

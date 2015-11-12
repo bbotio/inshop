@@ -1,11 +1,17 @@
 package com.inshop.entity;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * Base class for product.
@@ -24,7 +30,7 @@ public class Product implements Serializable, Cloneable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -32,12 +38,12 @@ public class Product implements Serializable, Cloneable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(name = "price_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "price_id")
     private Price price;
 
     @Column(name = "tags")
-    @ElementCollection(targetClass = String.class)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private Set<String> tags;
 
     @Column(name = "image_url")
@@ -46,27 +52,26 @@ public class Product implements Serializable, Cloneable {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @ManyToOne
-    @JoinColumn(name = "product_package_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_package_id")
     private ProductPackage productPackage;
 
-    @OneToMany
-    @JoinColumn(name = "additional_field_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "additional_field_id")
     private Set<AdditionalField> additionalFields;
 
-    @OneToMany
-    @JoinColumn(name = "categories_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private Set<Category> categories;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

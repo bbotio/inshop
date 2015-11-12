@@ -21,8 +21,8 @@ public class Category implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public int getId() {

@@ -9,21 +9,21 @@
     </@layout.put>
 
     <@layout.put block="items">
-        <#list 1..6 as x>
+        <#list products as product>
         <div class="col-md-4 col-sm-6">
             <div class="product-col">
                 <div class="image">
-                    <img src="/images/fashion-shop/product-images/14.jpg" alt="product" class="img-responsive">
+                    <img src="${product.imageUrl}" alt="product" class="img-responsive">
                 </div>
                 <div class="caption">
-                    <h4><a href="product.ftl">Fashion Garments</a></h4>
+                    <h4><a href="/product/${product.id}">${product.name!"Item without a name"}</a></h4>
 
                     <div class="description">
-                        We are so lucky living in such a wonderful time. Our almost unlimited ...
+                        ${product.description}
                     </div>
                     <div class="price">
-                        <span class="price-new">$199.50</span>
-                        <span class="price-old">$249.50</span>
+                        <span class="price-new">${product.price.price} ${product.price.currency}</span>
+                        <span class="price-old">$0</span>
                     </div>
                     <div class="cart-button button-group">
                         <button type="button" title="Wishlist" class="btn btn-wishlist">

@@ -3,8 +3,11 @@ package com.inshop.instagram;
 import com.inshop.Filter;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.net.URLEncoder.encode;
 
 /**
  * Created by savetisyan on 16/09/15.
@@ -20,11 +23,12 @@ public class InstagramFilter implements Filter<MediaFeedData> {
 
     @Override
     public boolean filter(MediaFeedData mediaFeedData) {
-        String text = mediaFeedData.getCaption().getText();
-        return text != null && compiledPattern.matcher(text).find();
+        return mediaFeedData != null &&
+                mediaFeedData.getCaption() != null &&
+                mediaFeedData.getCaption().getText() != null && getMatcher(mediaFeedData).find();
     }
 
-    public Pattern getCompiledPattern() {
-        return compiledPattern;
+    public Matcher getMatcher(MediaFeedData mediaFeedData) {
+        return compiledPattern.matcher(mediaFeedData.getCaption().getText());
     }
 }

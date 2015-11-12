@@ -1,6 +1,7 @@
 package com.inshop;
 
 import com.inshop.entity.Product;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ import java.util.List;
 public interface Crawler<T> {
     List<T> getItems();
 
-    List<List<Product>> getShopItems(Filter<T> filter);
+    List<Pair<Product, Integer>> getShopItems(Filter<T> filter);
 }

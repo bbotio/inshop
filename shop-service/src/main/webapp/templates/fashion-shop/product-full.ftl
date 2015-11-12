@@ -3,8 +3,8 @@
     <div class="row product-info full">
         <!-- Left Starts -->
         <div class="col-sm-4 images-block">
-            <a href="/images/fashion-shop/product-images/14.jpg">
-                <img src="/images/fashion-shop/product-images/14.jpg" alt="Image" class="img-responsive thumbnail">
+            <a href="${product.imageUrl}">
+                <img src="${product.imageUrl}" alt="Image" class="img-responsive thumbnail">
             </a>
 
         </div>
@@ -12,11 +12,9 @@
         <!-- Right Starts -->
         <div class="col-sm-8 product-details">
             <div class="panel-smart">
-                <!-- Product Name Starts -->
-                <h2>Fashion Garments</h2>
-                <!-- Product Name Ends -->
+                <h2>${product.name!"Item without a name"}</h2>
                 <hr>
-                <!-- Manufacturer Starts -->
+
                 <ul class="list-unstyled manufacturer">
                     <li>
                         <span>Brand:</span> Indian spices
@@ -27,18 +25,15 @@
                         <span>Availability:</span> <strong class="label label-danger">Out Of Stock</strong>
                     </li>
                 </ul>
-                <!-- Manufacturer Ends -->
                 <hr>
-                <!-- Price Starts -->
                 <div class="price">
                     <span class="price-head">Price :</span>
-                    <span class="price-new">$199.50</span>
-                    <span class="price-old">$249.50</span>
-                    <p class="price-tax">Ex Tax: $279.99</p>
+                    <span class="price-new">${product.price.price} ${product.price.currency}</span>
+                    <span class="price-old">$0</span>
+                    <p class="price-tax">Ex Tax: $0</p>
                 </div>
-                <!-- Price Ends -->
                 <hr>
-                <!-- Available Options Starts -->
+
                 <div class="options">
                     <h3>Available Options</h3>
                     <div class="form-group">
@@ -117,10 +112,7 @@
             <!-- Description Starts -->
             <div class="tab-pane" id="tab-description">
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-                <p>
-                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    ${product.description}
                 </p>
             </div>
             <!-- Description Ends -->

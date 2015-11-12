@@ -4,6 +4,7 @@ import com.inshop.Crawler;
 import com.inshop.Filter;
 import com.inshop.entity.Product;
 import com.inshop.entity.User;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.entity.users.feed.MediaFeedData;
@@ -26,6 +27,7 @@ import static com.inshop.ProductFactory.buildProducts;
  */
 public class InstagramCrawler implements Crawler<MediaFeedData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(InstagramCrawler.class);
+    public static final Pair<Product, Integer> EMPTY_PRODUCT = Pair.of(new Product(), 0);
     private User user;
 
     public InstagramCrawler(User user) {
@@ -46,16 +48,16 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
     }
 
     @Override
-    public List<List<Product>> getShopItems(Filter<MediaFeedData> filter) {
+    public List<Pair<Product, Integer>> getShopItems(Filter<MediaFeedData> filter) {
         return getItems().stream()
                 .filter(filter::filter)
                 .map(image -> {
-                    String domain = user.getShop().getDomain();
-                    InstagramFilter instagramFilter = new InstagramFilter(domain);
-                    Matcher matcher = instagramFilter.getCompiledPattern().matcher(image.getCaption().getText());
+                    InstagramFilter instagramFilter = (InstagramFilter) filter;
+                    Matcher matcher = instagramFilter.getMatcher(image);
+                    matcher.find();
                     String url = matcher.group();
                     if (url.isEmpty()) {
-                        return Collections.<Product>emptyList();
+                        return EMPTY_PRODUCT;
                     }
                     return buildProducts(image, url);
                 })
