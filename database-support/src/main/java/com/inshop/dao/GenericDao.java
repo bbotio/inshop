@@ -23,5 +23,7 @@ public interface GenericDao<T> {
 
     T findOne(Query query);
 
+    T findAny(Query query);
+
     void refresh(T t);
 }

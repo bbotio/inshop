@@ -11,5 +11,9 @@ import java.util.List;
 public interface ProductDao extends GenericDao<Product> {
     List<Product> getProductsByShop(Shop shop);
 
+    List<Product> getUniqueProductsByShop(Shop shop);
+
     Product getByImageUrl(String imageUrl);
+
+    Product getByPackageId(Integer packageId);
 }
