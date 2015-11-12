@@ -2,6 +2,7 @@ package com.inshop.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Avetisyan Sevak
@@ -9,7 +10,7 @@ import javax.persistence.*;
  * Time: 23:53
  */
 @Entity
-public class Price {
+public class Price implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

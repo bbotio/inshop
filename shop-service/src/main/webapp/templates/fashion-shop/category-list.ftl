@@ -9,24 +9,24 @@
     </@layout.put>
 
     <@layout.put block="items">
-        <#list 1..6 as x>
+        <#list products as product>
         <div class="col-xs-12">
             <div class="product-col list clearfix">
                 <div class="image">
-                    <img src="/images/fashion-shop/product-images/14.jpg" alt="product" class="img-responsive">
+                    <img src="${product.imageUrl}" alt="product" class="img-responsive">
                 </div>
                 <div class="caption">
-                    <h4><a href="product-full.ftl">Fashion Garments</a></h4>
+                    <h4>
+                        <a href="/product-full/${product.id}">${product.name!"Item without a name"}</a>
+                    </h4>
 
                     <div class="description">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book.
+                        ${product.description}
                     </div>
                     <div class="price">
-                        <p class="price-tax">Ex Tax: $279.99</p>
-                        <span class="price-new">$199.50</span>
-                        <span class="price-old">$249.50</span>
+                        <p class="price-tax">Ex Tax: $0</p>
+                        <span class="price-new">${product.price.price} ${product.price.currency}</span>
+                        <span class="price-old">$0</span>
                     </div>
                     <div class="cart-button button-group">
                         <button type="button" title="Wishlist" class="btn btn-wishlist">

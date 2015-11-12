@@ -14,12 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class ThemeDaoImpl extends GenericDaoImpl<Theme> implements ThemeDao {
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public Theme getThemeByName(final String name) {
-        Query query = sessionFactory.getCurrentSession()
+        Query query = getCurrentSession()
                 .createQuery("from Theme t where t.name=:name")
                 .setParameter("name", name);
         return (Theme) query.uniqueResult();

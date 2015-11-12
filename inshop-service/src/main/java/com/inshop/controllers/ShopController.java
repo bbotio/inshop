@@ -1,5 +1,6 @@
 package com.inshop.controllers;
 
+import com.inshop.InstagramScheduler;
 import com.inshop.dao.DeliveryTypeDao;
 import com.inshop.dao.ShopDao;
 import com.inshop.dao.ThemeDao;
@@ -67,6 +68,9 @@ public class ShopController {
     @Autowired
     private DeliveryTypeDao deliveryTypeDao;
 
+    @Autowired
+    private InstagramScheduler instagramScheduler;
+
     @RequestMapping(value = "/domain", method = POST, produces = APPLICATION_JSON_VALUE)
     public Response saveShopDomain(final HttpServletRequest request, final HttpSession session) {
         final User user = (User) session.getAttribute("user");
@@ -81,6 +85,7 @@ public class ShopController {
             if ((shopByDomain == null) || (shop.equals(shopByDomain))) {
                 shop.setDomain(newDomainName);
                 shopDao.update(shop);
+                instagramScheduler.restart();
                 return Response.ok();
             }
             return Response.error("Domain already exists.");

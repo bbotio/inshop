@@ -1,25 +1,21 @@
 package com.inshop;
 
 
-import com.inshop.dao.GenericDao;
+import com.inshop.dao.ProductDao;
 import com.inshop.dao.UserDao;
-import com.inshop.entity.AdditionalField;
+import com.inshop.entity.Category;
 import com.inshop.entity.Product;
 import com.inshop.entity.ProductPackage;
 import com.inshop.entity.User;
 import com.inshop.instagram.InstagramCrawler;
 import com.inshop.instagram.InstagramFilter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Created by savetisyan on 17/09/15.
@@ -30,8 +26,7 @@ public class InstagramScheduler {
     private UserDao userDao;
 
     @Autowired
-    @Qualifier("genericDaoImpl")
-    private GenericDao productDao;
+    private ProductDao productDao;
 
     @Value("${crawler.scheduler.threads:1}")
     private int schedulerThreadsCount;
@@ -39,28 +34,54 @@ public class InstagramScheduler {
     @Value("${crawler.threadpool.threads:4}")
     private int threadPoolThreadsCount;
 
+    private ScheduledFuture<?> scheduledFuture;
+
 
     public void init() {
         final ScheduledExecutorService executor = Executors.newScheduledThreadPool(schedulerThreadsCount);
         final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(threadPoolThreadsCount);
-        executor.schedule(() -> {
+        scheduledFuture = executor.scheduleAtFixedRate(() -> {
             for (User user : userDao.findAll(User.class)) {
                 threadPoolExecutor.submit(() -> {
                     InstagramCrawler instagramCrawler = new InstagramCrawler(user);
                     InstagramFilter filter = new InstagramFilter(user.getShop().getDomain());
-                    List<List<Product>> shopItems = instagramCrawler.getShopItems(filter);
+                    List<Pair<Product, Integer>> shopItems = instagramCrawler.getShopItems(filter);
 
-                    for (List<Product> shopItem : shopItems) {
+                    for (Pair<Product, Integer> shopItem : shopItems) {
                         ProductPackage productPackage = new ProductPackage();
 
-                        for (Product product : shopItem) {
-                            product.setShop(user.getShop());
-                            product.setProductPackage(productPackage);
-                            productDao.persist(product);
+                        Product product = shopItem.getKey();
+                        product.setShop(user.getShop());
+                        product.setProductPackage(productPackage);
+
+                        /**
+                         * TODO: don't save category to db, if it exists
+                         * e.g. the two products have category 'book'
+                         * try to find category by name, if it doesn't exist - save!
+                         */
+                        for (Category category : product.getCategories()) {
+                            category.setProduct(product);
+                        }
+
+                        Product productByUrl = productDao.getByImageUrl(product.getImageUrl());
+                        if (productByUrl == null) {
+                            for (int i = 0; i < shopItem.getValue(); i++) {
+                                product.setId(null);
+                                productDao.save(product);
+                            }
                         }
                     }
                 });
             }
-        }, 1, TimeUnit.DAYS);
+        }, 0, 15, TimeUnit.SECONDS);
+    }
+
+    public void destroy() {
+        scheduledFuture.cancel(false);
+    }
+
+    public void restart() {
+        scheduledFuture.cancel(false);
+        init();
     }
 }

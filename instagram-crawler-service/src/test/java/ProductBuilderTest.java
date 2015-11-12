@@ -2,6 +2,7 @@ import com.inshop.ProductFactory;
 import com.inshop.entity.Price;
 import com.inshop.entity.Product;
 import junit.framework.Assert;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jinstagram.entity.common.Caption;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.junit.Before;
@@ -42,9 +43,9 @@ public class ProductBuilderTest {
         caption.setText("You must buy this shoes" + url + ". Visit our site www.example.com");
         mediaFeedData.setTags(Arrays.asList("123", "tah1", "as8"));
 
-        List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
-        Assert.assertEquals(2, productList.size());
-        Product product = productList.get(0);
+        Pair<Product, Integer> productList = ProductFactory.buildProducts(mediaFeedData, url);
+        Assert.assertEquals(Integer.valueOf(2), productList.getValue());
+        Product product = productList.getKey();
 
         Assert.assertEquals(2, product.getCategories().size());
         product.getCategories()
@@ -74,11 +75,9 @@ public class ProductBuilderTest {
         caption.setText("You must buy this shoes! " + url);
         mediaFeedData.setTags(new ArrayList<>());
 
-        List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
-        System.out.println();
-
-        Assert.assertEquals(1, productList.size());
-        Product product = productList.get(0);
+        Pair<Product, Integer> productList = ProductFactory.buildProducts(mediaFeedData, url);
+        Assert.assertEquals(Integer.valueOf(1), productList.getValue());
+        Product product = productList.getKey();
 
         Assert.assertEquals(1, product.getCategories().size());
         product.getCategories()
@@ -102,11 +101,9 @@ public class ProductBuilderTest {
         caption.setText("You must buy this book! " + url);
         mediaFeedData.setTags(new ArrayList<>());
 
-        List<Product> productList = ProductFactory.buildProducts(mediaFeedData, url);
-        System.out.println();
-
-        Assert.assertEquals(1, productList.size());
-        Product product = productList.get(0);
+        Pair<Product, Integer> productList = ProductFactory.buildProducts(mediaFeedData, url);
+        Assert.assertEquals(Integer.valueOf(1), productList.getValue());
+        Product product = productList.getKey();
 
         Assert.assertEquals(2, product.getCategories().size());
         product.getCategories()

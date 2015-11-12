@@ -30,7 +30,8 @@ public class ShopDetectionFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final String hostName = req.getHeader("Host");
 
-        final Shop shop = shopDao.getShopByDomain(hostName);
+        //final Shop shop = shopDao.getShopByDomain(hostName);
+        final Shop shop = shopDao.getShopByDomain("books.inshop.yt");
 
         if (shop == null) {
             final HttpServletResponse httpResponse = (HttpServletResponse) response;

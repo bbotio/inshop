@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class CrawlerConfig {
-    @Bean(initMethod = "init")
+    @Bean(initMethod = "init", destroyMethod = "destroy")
     public InstagramScheduler endpoint() {
         return new InstagramScheduler();
     }
