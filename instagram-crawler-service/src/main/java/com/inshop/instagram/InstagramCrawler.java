@@ -7,6 +7,8 @@ import com.inshop.entity.User;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
+import org.jinstagram.entity.common.Pagination;
+import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 import org.slf4j.Logger;
@@ -40,7 +42,10 @@ public class InstagramCrawler implements Crawler<MediaFeedData> {
             com.inshop.entity.Token tokenEntity = user.getInstagramToken();
             Token instagramToken = new Token(tokenEntity.getToken(), tokenEntity.getSecret());
             Instagram instagram = new Instagram(instagramToken);
-            return instagram.getUserFeeds().getData();
+            /**
+             * TODO: use pagination!
+             */
+            return instagram.getUserFeeds(null, null, instagram.getUserInfo("self").getData().getCounts().getMedia()).getData();
         } catch (InstagramException e) {
             e.printStackTrace();
         }
