@@ -40,6 +40,7 @@ public class InstagramScheduler {
     public void init() {
         final ScheduledExecutorService executor = Executors.newScheduledThreadPool(schedulerThreadsCount);
         final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(threadPoolThreadsCount);
+
         scheduledFuture = executor.scheduleAtFixedRate(() -> {
             for (User user : userDao.findAll(User.class)) {
                 threadPoolExecutor.submit(() -> {
@@ -73,7 +74,7 @@ public class InstagramScheduler {
                     }
                 });
             }
-        }, 0, 15, TimeUnit.SECONDS);
+        }, 0, 10, TimeUnit.MINUTES);
     }
 
     public void destroy() {

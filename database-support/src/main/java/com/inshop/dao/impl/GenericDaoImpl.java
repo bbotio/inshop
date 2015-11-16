@@ -1,14 +1,11 @@
 package com.inshop.dao.impl;
 
 import com.inshop.dao.GenericDao;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -58,6 +55,11 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
     @Override
     public T findOne(Query query) {
         return (T) query.uniqueResult();
+    }
+
+    @Override
+    public T findAny(Query query) {
+        return (T) query.list().get(0);
     }
 
     @Override
