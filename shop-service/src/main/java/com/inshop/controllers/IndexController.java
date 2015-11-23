@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -37,29 +36,5 @@ public class IndexController {
         List<Product> uniqueProductsByShop = productDao.getUniqueProductsByShop(shop);
         params.addAttribute("products", uniqueProductsByShop);
         return shop.getTheme().getName() + "/category-list";
-    }
-
-    @RequestMapping(value = "/cart", method = GET)
-    public String cart(@ModelAttribute final Shop shop) {
-        return shop.getTheme().getName() + "/cart";
-    }
-
-    @RequestMapping(value = "/about", method = GET)
-    public String about(@ModelAttribute final Shop shop) {
-        return shop.getTheme().getName() + "/about";
-    }
-
-    @RequestMapping(value = "/product/{productId}", method = GET)
-    public String product(@ModelAttribute final Shop shop, final ModelMap params,
-                          @PathVariable("productId") Integer productId) {
-        params.addAttribute("product", productDao.get(Product.class, productId));
-        return shop.getTheme().getName() + "/product";
-    }
-
-    @RequestMapping(value = "/product-full/{productId}", method = GET)
-    public String productFull(@ModelAttribute final Shop shop, final ModelMap params,
-                              @PathVariable("productId") Integer productId) {
-        params.addAttribute("product", productDao.get(Product.class, productId));
-        return shop.getTheme().getName() + "/product-full";
     }
 }

@@ -2,16 +2,9 @@ package com.inshop.dao.impl;
 
 import com.inshop.dao.ShopDao;
 import com.inshop.entity.Shop;
-import com.inshop.entity.ShopDelivery;
 import com.inshop.entity.User;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by savetisyan on 16/09/15.

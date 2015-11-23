@@ -24,9 +24,9 @@
                         ${product.description}
                     </div>
                     <div class="price">
-                        <p class="price-tax">Ex Tax: $0</p>
+                        <#--<p class="price-tax">Ex Tax: $0</p>-->
                         <span class="price-new">${product.price.price} ${product.price.currency}</span>
-                        <span class="price-old">$0</span>
+                        <#--<span class="price-old">$0</span>-->
                     </div>
                     <div class="cart-button button-group">
                         <button type="button" title="Wishlist" class="btn btn-wishlist">

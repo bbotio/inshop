@@ -8,10 +8,8 @@ import com.inshop.dao.UserDao;
 import com.inshop.entity.*;
 import com.inshop.utils.Response;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.omg.CORBA.RepositoryIdHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -195,9 +193,9 @@ public class ShopController {
         }
 
         if(params.containsKey(ADDRESS_PARAM)) {
-            user.getAddress().setAddress(params.get(ADDRESS_PARAM)[0]);
-            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getAddress())) {
-                user.getShop().getPickUpAddress().setAddress(params.get(ADDRESS_PARAM)[0]);
+            user.getAddress().setAddress1(params.get(ADDRESS_PARAM)[0]);
+            if(StringUtils.isEmpty(user.getShop().getPickUpAddress().getAddress1())) {
+                user.getShop().getPickUpAddress().setAddress1(params.get(ADDRESS_PARAM)[0]);
             }
         }
 
@@ -268,7 +266,7 @@ public class ShopController {
                 }
 
                 if(params.containsKey(PICKUP_ADDRESS_PARAM)) {
-                    pickUpAddress.setAddress(params.get(PICKUP_ADDRESS_PARAM)[0]);
+                    pickUpAddress.setAddress1(params.get(PICKUP_ADDRESS_PARAM)[0]);
                 }
 
                 if(params.containsKey(PICKUP_ZIP_PARAM)) {

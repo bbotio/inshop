@@ -2,10 +2,8 @@ package com.inshop.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
 
 /**
  * This class represents available delivery type for the shop.

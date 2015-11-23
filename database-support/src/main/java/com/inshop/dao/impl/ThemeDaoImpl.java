@@ -3,8 +3,6 @@ package com.inshop.dao.impl;
 import com.inshop.dao.ThemeDao;
 import com.inshop.entity.Theme;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

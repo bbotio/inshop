@@ -1,7 +1,5 @@
 package com.inshop.entity;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;

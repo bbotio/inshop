@@ -7,17 +7,11 @@ import com.inshop.entity.User;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.model.Token;
-import org.jinstagram.entity.common.Pagination;
-import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;

@@ -22,13 +22,24 @@ public class Address implements Serializable {
     @Column(name = "state_or_province")
     private String stateOrProvince;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "address_1")
+    private String address1;
+
+    @Column(name = "address_2")
+    private String address2;
 
     @Column(name = "zip")
     private String zip;
 
     public Address() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCountry() {
@@ -63,27 +74,28 @@ public class Address implements Serializable {
         this.zip = zip;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
     }
 
-    public int getId() {
-        return id;
+    public String getAddress2() {
+        return address2;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAddress2(String address2) {
+        this.address2 = address2;
     }
 
     @Override
     public String toString() {
         return "Address{" +
                 "zip='" + zip + '\'' +
-                ", address='" + address + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
                 ", stateOrProvince='" + stateOrProvince + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +

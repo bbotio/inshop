@@ -54,7 +54,7 @@ public class Price implements Serializable {
     }
 
     public enum Currency {
-        EU, RUB, USD
+        USD, EUR, RUB
     }
 
     @Override

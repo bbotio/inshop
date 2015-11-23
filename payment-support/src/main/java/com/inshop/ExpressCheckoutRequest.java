@@ -45,7 +45,7 @@ public class ExpressCheckoutRequest {
 
         PaymentDetailsType paymentDetail = new PaymentDetailsType();
         paymentDetail.setOrderTotal(orderTotal);
-        paymentDetail.setPaymentAction(PaymentActionCodeType.ORDER);
+        paymentDetail.setPaymentAction(PaymentActionCodeType.SALE);
         paymentDetail.setSellerDetails(sellerDetails);
         paymentDetail.setPaymentRequestID("request_id");
 
@@ -81,7 +81,7 @@ public class ExpressCheckoutRequest {
 
         PaymentDetailsType paymentDetail = new PaymentDetailsType();
         paymentDetail.setOrderTotal(orderTotal);
-        paymentDetail.setPaymentAction(PaymentActionCodeType.ORDER);
+        paymentDetail.setPaymentAction(PaymentActionCodeType.SALE);
         paymentDetail.setSellerDetails(sellerDetails);
         paymentDetail.setPaymentRequestID("request_id");
 

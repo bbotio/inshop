@@ -456,7 +456,7 @@
                                             <div class="col-md-8">
                                                 <div class="col-md-10">
                                                     <input type="text" id="address" name="address" placeholder="" class="form-control"
-                                                           value="${user.address.address!""}">
+                                                           value="${user.address.address1!""}">
                                                     <span class="help-block">Please provide your address (street, house)</span>
                                                 </div>
                                             </div>
@@ -825,7 +825,7 @@
                                                         <div class="col-md-8">
                                                             <div class="col-md-10">
                                                                 <input type="text" id="address-pickup" name="address-pickup" placeholder="" class="form-control"
-                                                                       value="${shop.pickUpAddress.address!""}">
+                                                                       value="${shop.pickUpAddress.address1!""}">
                                                                 <span class="help-block">Please provide your address (street, house)</span>
                                                             </div>
                                                         </div>

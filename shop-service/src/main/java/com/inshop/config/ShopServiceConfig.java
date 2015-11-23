@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Import;
  *
  */
 @Configuration
-@Import({CommonConfig.class, WebServerConfig.class, HibernateConfig.class})
+@Import({CommonConfig.class, WebServerConfig.class, HibernateConfig.class, PayPalConfig.class})
 public class ShopServiceConfig {
 }
