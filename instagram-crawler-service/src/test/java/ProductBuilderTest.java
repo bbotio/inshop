@@ -13,7 +13,6 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import static com.inshop.entity.Price.Currency.RUB;
 import static com.inshop.entity.Price.Currency.USD;

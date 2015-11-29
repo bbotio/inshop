@@ -11,10 +11,13 @@
     <description>Inshop - retail platform with data source form instagram</description>
 
     <modules>
+        <!--Supports-->
         <module>service-support</module>
         <module>web-support</module>
         <module>database-support</module>
         <module>payment-support</module>
+
+        <!--Service-->
         <module>inshop-service</module>
         <module>instagram-crawler-service</module>
         <module>shop-service</module>

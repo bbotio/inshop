@@ -3,16 +3,9 @@ package com.inshop.dao.impl;
 import com.inshop.dao.ProductDao;
 import com.inshop.entity.Product;
 import com.inshop.entity.Shop;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Subqueries;
-import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

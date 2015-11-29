@@ -1,17 +1,9 @@
 package com.inshop.entity;
 
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * Base class for product.
@@ -64,8 +56,14 @@ public class Product implements Serializable, Cloneable {
     @JoinColumn(name = "additional_field_id")
     private Set<AdditionalField> additionalFields;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
     private Set<Category> categories;
+
+    /**
+     * This field is used only for UI purposes
+     */
+    @Transient
+    private Integer quantity;
 
     public Integer getId() {
         return id;
@@ -169,6 +167,14 @@ public class Product implements Serializable, Cloneable {
                 ", productPackage=" + productPackage +
                 ", additionalFields=" + additionalFields +
                 '}';
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     @Override
